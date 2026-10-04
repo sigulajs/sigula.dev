@@ -20,7 +20,7 @@ export const core: SectionMeta = {
     {id: 'fine-grained', title: 'Fine-grained updates'},
     {id: 'declarative', title: 'Declarative bindings'},
     {id: 'no-vdom', title: 'No virtual DOM'},
-    {id: 'templates', title: 'Minimal templates'},
+    {id: 'core-templates', title: 'Minimal templates'},
     {id: 'small', title: 'Ultra small'},
   ],
   render: (): View => html`<section id="core-concepts" class="scroll-mt-24 pt-12">
@@ -32,7 +32,7 @@ export const core: SectionMeta = {
     <p class="mt-2 leading-relaxed text-[var(--text)]">Signals are the single source of truth; every view and side effect derives from them.</p>
     <h3 id="no-vdom" data-heading="" class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">No virtual DOM</h3>
     <p class="mt-2 leading-relaxed text-[var(--text)]">Mount establishes direct subscriptions between signals and DOM nodes; changes go straight to the node.</p>
-    <h3 id="templates" data-heading="" class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Minimal HTML templates</h3>
+    <h3 id="core-templates" data-heading="" class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Minimal HTML templates</h3>
     <p class="mt-2 leading-relaxed text-[var(--text)]">Templates are plain JavaScript string templates, cached per call site.</p>
     <h3 id="small" data-heading="" class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Ultra small</h3>
     <p class="mt-2 leading-relaxed text-[var(--text)]">Around 4.0KB minified and gzipped.</p>

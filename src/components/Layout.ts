@@ -57,6 +57,7 @@ const Header = (mobileOpen: Sig<boolean>): View => html`<header class="sticky to
       <span class="font-semibold text-[var(--text-h)]">sigula</span>
     </a>
     ${Badge('v1.0.3')}
+    ${Badge('~4.0KB')}
     <div class="ml-auto flex items-center gap-2">
       <a
         href="https://github.com/sigulajs/sigula"
@@ -112,7 +113,7 @@ export const Layout = ({sections, activeSection, activeHeading}: LayoutProps): V
         </aside>
       </div>
       <footer class="border-t border-[var(--border)] py-8 text-center text-sm text-[var(--text)]">
-        <p>sigula — MIT License · <a href="https://github.com/sigulajs/sigula" class="hover:underline">GitHub</a></p>
+        <p>sigula — MIT License · zjh · <a href="https://github.com/sigulajs/sigula" class="hover:underline">GitHub</a></p>
       </footer>
     </div>
     ${MobileNav(mobileOpen, activeSection)}

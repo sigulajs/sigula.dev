@@ -20,7 +20,7 @@
   ],
   "keywords": [],
   "author": "zjh <zhanjh@126.com>",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
