@@ -7,6 +7,7 @@ import {
   sig,
   text,
   view,
+  type AnyView,
   type Sig,
   type View,
 } from 'sigula';
@@ -67,7 +68,7 @@ const Header = (mobileOpen: Sig<boolean>): View => html`<header class="sticky to
   </div>
 </header>`;
 
-const MobileNav = (open: Sig<boolean>, active: Sig<string>): View =>
+const MobileNav = (open: Sig<boolean>, active: Sig<string>): AnyView =>
   view(open, (isOpen) =>
     isOpen
       ? html`<div
@@ -76,13 +77,19 @@ const MobileNav = (open: Sig<boolean>, active: Sig<string>): View =>
         >
           <div
             class="h-full w-64 overflow-y-auto bg-[var(--bg)] p-4"
-            ${patch(on('click', (event) => event.stopPropagation()))}
+            ${patch(
+              on('click', (event) => {
+                event.stopPropagation();
+                const target = event.target;
+                if (target instanceof HTMLAnchorElement) open.update(false);
+              }),
+            )}
           >
             ${Nav(active)}
           </div>
         </div>`
       : text(''),
-  ) as View;
+  );
 
 export const Layout = ({sections, activeSection, activeHeading}: LayoutProps): View => {
   const mobileOpen = sig(false);
@@ -92,20 +99,22 @@ export const Layout = ({sections, activeSection, activeHeading}: LayoutProps): V
       view: (section) => section.render(),
     })}
   </div>`;
-  return html`<div class="@container min-h-screen">
-    ${Header(mobileOpen)}
-    <div class="mx-auto flex w-full max-w-[1400px] items-start gap-6 px-4 py-8 @3xl:px-6">
-      <aside class="sticky top-14 hidden max-h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto @3xl:block">
-        ${Nav(activeSection)}
-      </aside>
-      <main class="min-w-0 flex-1">${content}</main>
-      <aside class="sticky top-14 hidden max-h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto @5xl:block">
-        ${Toc(activeSection, activeHeading)}
-      </aside>
+  return html`<div>
+    <div class="@container min-h-screen">
+      ${Header(mobileOpen)}
+      <div class="mx-auto flex w-full max-w-[1400px] items-start gap-6 px-4 py-8 @3xl:px-6">
+        <aside class="sticky top-14 hidden max-h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto @3xl:block">
+          ${Nav(activeSection)}
+        </aside>
+        <main class="min-w-0 flex-1">${content}</main>
+        <aside class="sticky top-14 hidden max-h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto @5xl:block">
+          ${Toc(activeSection, activeHeading)}
+        </aside>
+      </div>
+      <footer class="border-t border-[var(--border)] py-8 text-center text-sm text-[var(--text)]">
+        <p>sigula — MIT License · <a href="https://github.com/sigulajs/sigula" class="hover:underline">GitHub</a></p>
+      </footer>
     </div>
-    <footer class="border-t border-[var(--border)] py-8 text-center text-sm text-[var(--text)]">
-      <p>sigula — MIT License · <a href="https://github.com/sigulajs/sigula" class="hover:underline">GitHub</a></p>
-    </footer>
     ${MobileNav(mobileOpen, activeSection)}
   </div>`;
 };
