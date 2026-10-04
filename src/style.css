@@ -223,6 +223,15 @@ a {
   color: #f472b6;
 }
 
+.dark .hljs-comment,
+.dark .hljs-quote {
+  color: #9aa0a6;
+}
+
+.dark .hljs-tag {
+  color: #9ca3af;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
