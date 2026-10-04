@@ -13,8 +13,9 @@ const readStored = (): Theme | undefined => {
   }
 };
 
-const systemTheme = (): Theme =>
-  window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+const systemTheme = (): Theme => (darkQuery.matches ? 'dark' : 'light');
 
 export const theme = sig<Theme>(readStored() ?? systemTheme());
 
@@ -44,11 +45,12 @@ export const toggleTheme = (): void => {
 apply(theme.get());
 
 try {
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', (event) => {
-      if (!readStored()) setTheme(event.matches ? 'dark' : 'light');
-    });
+  darkQuery.addEventListener('change', (event) => {
+    if (readStored()) return;
+    const next: Theme = event.matches ? 'dark' : 'light';
+    theme.update(next);
+    apply(next);
+  });
 } catch {
   // matchMedia unavailable; ignore
 }
