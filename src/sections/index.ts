@@ -10,7 +10,7 @@ import {quickstart} from './quickstart';
 import {reactivity} from './reactivity';
 import {rendering} from './rendering';
 import {templates} from './templates';
-import type {SectionMeta} from './types';
+import type {Heading, SectionGroup, SectionMeta} from './types';
 
 export type {Heading, SectionMeta} from './types';
 
@@ -30,11 +30,11 @@ export const sections: SectionMeta[] = [
 ];
 
 export interface NavGroup {
-  name: string;
+  name: SectionGroup;
   items: SectionMeta[];
 }
 
-const groupOrder = ['Introduction', 'Reference', 'Appendix'];
+const groupOrder: SectionGroup[] = ['Introduction', 'Reference', 'Appendix'];
 
 export const navGroups: NavGroup[] = groupOrder
   .map((name) => ({
@@ -43,5 +43,5 @@ export const navGroups: NavGroup[] = groupOrder
   }))
   .filter((group) => group.items.length > 0);
 
-export const headingsBySection: Record<string, {id: string; title: string}[]> =
+export const headingsBySection: Record<string, Heading[]> =
   Object.fromEntries(sections.map((section) => [section.id, section.headings]));
