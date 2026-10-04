@@ -1,4 +1,5 @@
-import {html, repeat, sig, text, type View} from 'sigula';
+import {html, repeat, sig, type View} from 'sigula';
+import {rich} from './rich';
 
 export interface ApiTableData {
   headers: string[];
@@ -14,7 +15,7 @@ export const ApiTable = ({headers, rows}: ApiTableData): View => {
         <tr>
           ${repeat(head, {
             key: (item) => String(item.index),
-            view: (item) => html`<th class="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--text-h)]">${text(item.value)}</th>`,
+            view: (item) => html`<th scope="col" class="border-b border-[var(--border)] px-3 py-2 font-semibold text-[var(--text-h)]">${rich(item.value)}</th>`,
           })}
         </tr>
       </thead>
@@ -24,7 +25,7 @@ export const ApiTable = ({headers, rows}: ApiTableData): View => {
           view: (row) => html`<tr class="border-b border-[var(--border)] align-top last:border-0">
             ${repeat(sig(row.cells.map((value, index) => ({index, value}))), {
               key: (item) => String(item.index),
-              view: (cell) => html`<td class="px-3 py-2 text-[var(--text)]">${text(cell.value)}</td>`,
+              view: (cell) => html`<td class="px-3 py-2 text-[var(--text)]">${rich(cell.value)}</td>`,
             })}
           </tr>`,
         })}
