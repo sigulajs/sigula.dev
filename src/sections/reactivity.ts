@@ -23,8 +23,8 @@ const entries: ApiEntryData[] = [
         ['forceUpdate', '(v: T): void', 'Sets the value and always notifies dependents, even when deeply equal.'],
         ['trans', '(fn: (v: T) => T): void', 'Applies `fn` to the current value via `update`, so an equal result is skipped.'],
         ['equals', '(other: unknown): boolean', 'Two `Sig`s are equal when their values are deeply equal.'],
-        ['addBind', '<C>(bind: Bind<T, C>): void', 'Registers a binding. Prefer the `patch`/`text`/`view` APIs.'],
-        ['removeBind', '<C>(bind: Bind<T, C>): void', 'Unregisters a binding; runs `cleanup()` when the last one goes away.'],
+        ['addBind', '<C extends CmdContext>(bind: Bind<T, C>): void', 'Registers a binding. Prefer the `patch`/`text`/`view` APIs.'],
+        ['removeBind', '(bind: Bind<T, CmdContext>): void', 'Unregisters a binding; runs `cleanup()` when the last one goes away.'],
         ['getBinds', '(): Bind<T, CmdContext>[]', 'Returns the current bindings.'],
         ['cleanup', '(): void', 'Hook called when a signal loses all bindings. No-op on `Sig`.'],
       ],
@@ -37,8 +37,8 @@ const entries: ApiEntryData[] = [
     table: {
       headers: ['Member', 'Signature', 'Description'],
       rows: [
-        ['addFromBind', '<S, C>(bind: Bind<S, C>): void', 'Registers a source binding.'],
-        ['addBind', '<C>(bind: Bind<T, C>): void', 'Registers a consumer; re-links and recomputes once if detached.'],
+        ['addFromBind', '<S, C extends CmdContext>(bind: Bind<S, C>): void', 'Registers a source binding.'],
+        ['addBind', '<C extends CmdContext>(bind: Bind<T, C>): void', 'Registers a consumer; re-links and recomputes once if detached.'],
         ['cleanup', '(): void', 'Removes every source binding when there are no consumers.'],
       ],
     },
@@ -56,7 +56,7 @@ const entries: ApiEntryData[] = [
       headers: ['Supporting type', 'Definition'],
       rows: [
         ['SigRecord', '{ [key: string]: Sig<any>; }'],
-        ['ValRecord<K>', '{ [P in keyof K]: K[P] extends Sig<infer U> ? U : never; }'],
+        ['ValRecord<K extends SigRecord>', '{ [P in keyof K]: K[P] extends Sig<infer U> ? U : never; }'],
       ],
     },
   },
@@ -80,7 +80,7 @@ const entries: ApiEntryData[] = [
   {
     name: 'createBind / removeBind',
     signature:
-      'const createBind: <T, C extends CmdContext>(sig: Sig<T>, context: C, cmd: Cmd<T, C>) => Bind<T, C>;\nconst removeBind: <T, C extends CmdContext>(bind: Bind<T, C>) => void;',
+      'const createBind: <T, C extends CmdContext>(sig: Sig<T>, context: C, cmd: Cmd<T, C>) => Bind<T, C>;\nconst removeBind: (bind: Bind<unknown, CmdContext>) => void;',
     description:
       'Low-level bind management. `createBind` wires `cmd(sig.get(), context)` to run whenever `sig` changes; `removeBind` detaches it.',
     table: {
