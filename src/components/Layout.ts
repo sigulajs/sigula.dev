@@ -72,7 +72,7 @@ const MobileNav = (open: Sig<boolean>, active: Sig<string>): AnyView =>
   view(open, (isOpen) =>
     isOpen
       ? html`<div
-          class="fixed inset-0 z-50 bg-black/40 @3xl:hidden"
+          class="fixed inset-0 z-50 bg-black/40 md:hidden"
           ${patch(on('click', () => open.update(false)))}
         >
           <div
