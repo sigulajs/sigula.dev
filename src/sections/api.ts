@@ -1,4 +1,4 @@
-import {html, repeat, sig, type View} from 'sigula';
+import {html, id, patch, repeat, sig, text, type View} from 'sigula';
 import {ApiEntry, type ApiEntryProps} from '../components/ApiEntry';
 import type {Heading} from './types';
 
@@ -32,3 +32,13 @@ export const buildApiSection = (
       </div>`,
   };
 };
+
+export const headingSection = (
+  sectionId: string,
+  title: string,
+  body: View,
+): View =>
+  html`<section ${patch(id(sectionId))} data-heading="" class="scroll-mt-24 pt-12">
+    <h2 class="text-3xl font-semibold tracking-tight text-[var(--text-h)]">${text(title)}</h2>
+    <div class="mt-4">${body}</div>
+  </section>`;
