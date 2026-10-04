@@ -36,6 +36,6 @@ export const core: SectionMeta = {
     <p class="mt-2 leading-relaxed text-[var(--text)]">Templates are plain JavaScript string templates, cached per call site.</p>
     <h3 id="small" data-heading="" class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Ultra small</h3>
     <p class="mt-2 leading-relaxed text-[var(--text)]">Around 4.0KB minified and gzipped.</p>
-    ${Callout('Version note', 'This site documents the installed `sigula@1.0.3` surface. Where the README differs, the shipped types are authoritative.')}
+    ${Callout('Version note', 'This site follows the Sigula README; API signatures track the shipped `sigula@1.0.3` types.')}
   </section>`,
 };
