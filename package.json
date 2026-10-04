@@ -1,0 +1,36 @@
+{
+  "name": "sigula.dev",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": "^24.21.0",
+    "pnpm": "^12.8.1"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "imports": {
+    "#/*": "./src/*",
+    "#root/*": "./*"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "author": "zjh <zhanjh@126.com>",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "2.5.14",
+    "@types/node": "26.6.3",
+    "typescript": "7.0.2",
+    "unocss": "66.10.5",
+    "vite": "8.3.1"
+  },
+  "dependencies": {
+    "highlight.js": "^11.12.0",
+    "sigula": "1.0.3"
+  }
+}
