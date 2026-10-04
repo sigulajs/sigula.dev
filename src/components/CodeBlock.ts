@@ -54,6 +54,6 @@ export const CodeBlock = ({
       <span class="font-mono text-xs text-[var(--text)]">${text(title)}</span>
       ${CopyButton(source, 'Copy')}
     </div>
-    <pre class="overflow-x-auto p-4 text-[13px] leading-relaxed"><code class="hljs" ${patch(act(highlighted, (node, value) => { (node as Element).innerHTML = String(value); }))}></code></pre>
+    <pre class="overflow-x-auto p-4 text-[13px] leading-relaxed"><code class="hljs" ${patch(act(highlighted, (node, value) => { if (node instanceof HTMLElement) node.innerHTML = String(value); }))}></code></pre>
   </div>`;
 };
