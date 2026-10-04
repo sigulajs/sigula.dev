@@ -1,0 +1,111 @@
+import {
+  compute,
+  html,
+  on,
+  patch,
+  repeat,
+  sig,
+  text,
+  view,
+  type Sig,
+  type View,
+} from 'sigula';
+import type {SectionMeta} from '../sections';
+import {theme, toggleTheme} from '../theme';
+import {Badge} from './Badge';
+import {Nav} from './Nav';
+import {Toc} from './Toc';
+
+export interface LayoutProps {
+  sections: SectionMeta[];
+  activeSection: Sig<string>;
+  activeHeading: Sig<string>;
+}
+
+const GitHubIcon = (): View =>
+  html`<svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>`;
+
+const SunIcon = (): View =>
+  html`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`;
+
+const MoonIcon = (): View =>
+  html`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+const ThemeToggle = (): View => {
+  const isDark = compute(theme, (value) => value === 'dark');
+  return html`<button
+    type="button"
+    ${patch(on('click', toggleTheme))}
+    aria-label="Toggle color theme"
+    class="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] text-[var(--text-h)] transition hover:border-[var(--accent-border)]"
+  >${view(isDark, (dark) => (dark ? MoonIcon() : SunIcon()))}</button>`;
+};
+
+const Header = (mobileOpen: Sig<boolean>): View => html`<header class="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]">
+  <div class="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-3 px-4 @3xl:px-6">
+    <button
+      type="button"
+      ${patch(on('click', () => mobileOpen.update(true)))}
+      aria-label="Open navigation"
+      class="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] text-[var(--text-h)] @3xl:hidden"
+    >
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <a href="#overview" class="flex items-center gap-2">
+      <img src="/favicon.svg" alt="" width="22" height="22" />
+      <span class="font-semibold text-[var(--text-h)]">sigula</span>
+    </a>
+    ${Badge('v1.0.3')}
+    <div class="ml-auto flex items-center gap-2">
+      <a
+        href="https://github.com/sigulajs/sigula"
+        aria-label="GitHub repository"
+        class="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] text-[var(--text-h)] transition hover:border-[var(--accent-border)]"
+      >${GitHubIcon()}</a>
+      ${ThemeToggle()}
+    </div>
+  </div>
+</header>`;
+
+const MobileNav = (open: Sig<boolean>, active: Sig<string>): View =>
+  view(open, (isOpen) =>
+    isOpen
+      ? html`<div
+          class="fixed inset-0 z-50 bg-black/40 @3xl:hidden"
+          ${patch(on('click', () => open.update(false)))}
+        >
+          <div
+            class="h-full w-64 overflow-y-auto bg-[var(--bg)] p-4"
+            ${patch(on('click', (event) => event.stopPropagation()))}
+          >
+            ${Nav(active)}
+          </div>
+        </div>`
+      : text(''),
+  ) as View;
+
+export const Layout = ({sections, activeSection, activeHeading}: LayoutProps): View => {
+  const mobileOpen = sig(false);
+  const content = html`<div>
+    ${repeat(sig(sections), {
+      key: (section) => section.id,
+      view: (section) => section.render(),
+    })}
+  </div>`;
+  return html`<div class="@container min-h-screen">
+    ${Header(mobileOpen)}
+    <div class="mx-auto flex w-full max-w-[1400px] items-start gap-6 px-4 py-8 @3xl:px-6">
+      <aside class="sticky top-14 hidden max-h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto @3xl:block">
+        ${Nav(activeSection)}
+      </aside>
+      <main class="min-w-0 flex-1">${content}</main>
+      <aside class="sticky top-14 hidden max-h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto @5xl:block">
+        ${Toc(activeSection, activeHeading)}
+      </aside>
+    </div>
+    <footer class="border-t border-[var(--border)] py-8 text-center text-sm text-[var(--text)]">
+      <p>sigula — MIT License · <a href="https://github.com/sigulajs/sigula" class="hover:underline">GitHub</a></p>
+    </footer>
+    ${MobileNav(mobileOpen, activeSection)}
+  </div>`;
+};

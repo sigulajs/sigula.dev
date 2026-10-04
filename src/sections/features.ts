@@ -33,7 +33,7 @@ export const features: SectionMeta = {
   title: 'Features',
   group: 'Introduction',
   headings: [{id: 'features', title: 'Features'}],
-  render: (): View => html`<section id="features" class="scroll-mt-24 pt-12">
+  render: (): View => html`<section id="features" data-heading="" class="scroll-mt-24 pt-12">
     <h2 class="text-3xl font-semibold tracking-tight text-[var(--text-h)]">Features</h2>
     <div class="mt-6 grid gap-4 @3xl:grid-cols-2">
       ${repeat(sig(featureItems), {
