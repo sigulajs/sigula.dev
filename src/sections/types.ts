@@ -1,6 +1,6 @@
 import type {View} from 'sigula';
 
-export type SectionGroup = 'Introduction' | 'Reference' | 'Appendix';
+export type SectionGroup = 'Introduction' | 'Concepts' | 'Reference' | 'Appendix';
 
 export interface Heading {
   id: string;
