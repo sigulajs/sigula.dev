@@ -12,7 +12,7 @@ const body = html`<div>
       ['E1:<index>', 'at', 'Array index out of range.'],
       ['E2', 'toBoundary', 'Cannot build a boundary from an empty fragment.'],
       ['E3', 'replaceWithNode', 'The old boundary has no `parentNode`.'],
-      ['E4', 'patch', 'A keyed command (`attr`, `style`, `styleProperty`, `toggleClass`) was given no key.'],
+      ['E4', 'patch', 'A keyed command (`attr`, `style`, `styleProp`, `toggleClass`) was given no key.'],
       ['E5', 'patch', '`act` was given no function.'],
       ['E6', 'patch', '`on` was given no event type.'],
       ['E7', 'repeat', 'The rendered items have no parent node.'],
