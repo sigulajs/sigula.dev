@@ -8,7 +8,7 @@ export const quickstart: SectionMeta = {
   title: 'Quick Start',
   group: 'Introduction',
   headings: [{id: 'quick-start', title: 'Quick Start'}],
-  render: (): View => html`<section id="quick-start" data-heading="" class="scroll-mt-24 pt-12">
+  render: (): View => html`<section id="quick-start" class="scroll-mt-24 pt-12">
     <h2 class="text-3xl font-semibold tracking-tight text-[var(--text-h)]">Quick Start</h2>
     <p class="mt-3 leading-relaxed text-[var(--text)]">Install Sigula, create a signal-based view, and mount it into the DOM.</p>
     ${CodeBlock({code: source, lang: 'typescript', filename: 'main.ts'})}

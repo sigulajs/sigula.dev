@@ -15,12 +15,10 @@ import type {SectionMeta} from '../sections';
 import {theme, toggleTheme} from '../theme';
 import {Badge} from './Badge';
 import {Nav} from './Nav';
-import {Toc} from './Toc';
 
 export interface LayoutProps {
   sections: SectionMeta[];
   activeSection: Sig<string>;
-  activeHeading: Sig<string>;
 }
 
 const GitHubIcon = (): View =>
@@ -56,8 +54,8 @@ const Header = (mobileOpen: Sig<boolean>): View => html`<header class="sticky to
       <img src="/favicon.svg" alt="" width="22" height="22" />
       <span class="font-semibold text-[var(--text-h)]">sigula</span>
     </a>
-    ${Badge('v1.0.3')}
-    ${Badge('~4.0KB')}
+    ${Badge('v2.0.1')}
+    ${Badge('~4.5KB')}
     <div class="ml-auto flex items-center gap-2">
       <a
         href="https://github.com/sigulajs/sigula"
@@ -92,7 +90,7 @@ const MobileNav = (open: Sig<boolean>, active: Sig<string>): AnyView =>
       : text(''),
   );
 
-export const Layout = ({sections, activeSection, activeHeading}: LayoutProps): View => {
+export const Layout = ({sections, activeSection}: LayoutProps): View => {
   const mobileOpen = sig(false);
   const content = html`<div>
     ${repeat(sig(sections), {
@@ -103,14 +101,11 @@ export const Layout = ({sections, activeSection, activeHeading}: LayoutProps): V
   return html`<div>
     <div class="@container min-h-screen">
       ${Header(mobileOpen)}
-      <div class="mx-auto flex w-full max-w-[1400px] items-start gap-6 px-4 py-8 @3xl:px-6">
+      <div class="mx-auto flex w-full max-w-[1100px] items-start gap-8 px-4 py-8 @3xl:px-6">
         <aside class="sticky top-14 hidden max-h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto @3xl:block">
           ${Nav(activeSection)}
         </aside>
         <main class="min-w-0 flex-1">${content}</main>
-        <aside class="sticky top-14 hidden max-h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto @5xl:block">
-          ${Toc(activeSection, activeHeading)}
-        </aside>
       </div>
       <footer class="border-t border-[var(--border)] py-8 text-center text-sm text-[var(--text)]">
         <p>sigula — MIT License · zjh · <a href="https://github.com/sigulajs/sigula" class="hover:underline">GitHub</a></p>

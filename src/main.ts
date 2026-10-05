@@ -10,13 +10,9 @@ const appNode = document.querySelector('#app');
 if (!appNode) throw new Error('#app not found');
 
 const activeSection = sig(sections[0]?.id ?? '');
-const activeHeading = sig('');
-const dispose = render(
-  Layout({sections, activeSection, activeHeading}),
-  appNode,
-);
+const dispose = render(Layout({sections, activeSection}), appNode);
 
-setupScrollSpy(activeSection, activeHeading);
+setupScrollSpy(activeSection);
 restoreHash();
 
 window.addEventListener('beforeunload', dispose, {once: true});

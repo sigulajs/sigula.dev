@@ -11,6 +11,6 @@ export interface SectionMeta {
   id: string;
   title: string;
   group: SectionGroup;
-  headings: Heading[];
+  headings?: Heading[];
   render: () => View;
 }

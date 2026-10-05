@@ -25,16 +25,16 @@ export const core: SectionMeta = {
   ],
   render: (): View => html`<section id="core-concepts" class="scroll-mt-24 pt-12">
     <h2 class="text-3xl font-semibold tracking-tight text-[var(--text-h)]">Core Concepts</h2>
-    <h3 id="fine-grained" data-heading="" class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Fine-grained updates to the real DOM</h3>
+    <h3 id="fine-grained"  class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Fine-grained updates to the real DOM</h3>
     <p class="mt-2 leading-relaxed text-[var(--text)]">Signals hold state. Only the exact text node that depends on a signal is updated when it changes; everything else stays untouched.</p>
     ${Counter()}
-    <h3 id="declarative" data-heading="" class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Declarative signal sources + precise bindings</h3>
+    <h3 id="declarative"  class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Declarative signal sources + precise bindings</h3>
     <p class="mt-2 leading-relaxed text-[var(--text)]">Signals are the single source of truth; every view and side effect derives from them.</p>
-    <h3 id="no-vdom" data-heading="" class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">No virtual DOM</h3>
+    <h3 id="no-vdom"  class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">No virtual DOM</h3>
     <p class="mt-2 leading-relaxed text-[var(--text)]">Mount establishes direct subscriptions between signals and DOM nodes; changes go straight to the node.</p>
-    <h3 id="core-templates" data-heading="" class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Minimal HTML templates</h3>
+    <h3 id="core-templates"  class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Minimal HTML templates</h3>
     <p class="mt-2 leading-relaxed text-[var(--text)]">Templates are plain JavaScript string templates, cached per call site.</p>
-    <h3 id="small" data-heading="" class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Ultra small</h3>
+    <h3 id="small"  class="scroll-mt-24 text-xl font-semibold text-[var(--text-h)]">Ultra small</h3>
     <p class="mt-2 leading-relaxed text-[var(--text)]">Around 4.0KB minified and gzipped.</p>
     ${Callout('Version note', 'This site follows the Sigula README; API signatures track the shipped `sigula@1.0.3` types.')}
   </section>`,

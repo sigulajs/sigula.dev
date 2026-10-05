@@ -9,7 +9,7 @@ export const hero: SectionMeta = {
   title: 'Overview',
   group: 'Introduction',
   headings: [{id: 'overview', title: 'Sigula'}],
-  render: (): View => html`<section id="overview" data-heading="" class="scroll-mt-24 pt-4">
+  render: (): View => html`<section id="overview" class="scroll-mt-24 pt-4">
     <div class="grid items-start gap-10 @4xl:grid-cols-2">
       <div>
         <div class="flex flex-wrap items-center gap-2">

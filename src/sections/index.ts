@@ -10,9 +10,9 @@ import {quickstart} from './quickstart';
 import {reactivity} from './reactivity';
 import {rendering} from './rendering';
 import {templates} from './templates';
-import type {Heading, SectionGroup, SectionMeta} from './types';
+import type {SectionGroup, SectionMeta} from './types';
 
-export type {Heading, SectionMeta} from './types';
+export type {SectionMeta} from './types';
 
 export const sections: SectionMeta[] = [
   hero,
@@ -42,6 +42,3 @@ export const navGroups: NavGroup[] = groupOrder
     items: sections.filter((section) => section.group === name),
   }))
   .filter((group) => group.items.length > 0);
-
-export const headingsBySection: Record<string, Heading[]> =
-  Object.fromEntries(sections.map((section) => [section.id, section.headings]));
