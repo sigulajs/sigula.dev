@@ -29,6 +29,5 @@ export const errors: SectionMeta = {
   id: 'errors',
   title: 'Errors',
   group: 'Appendix',
-  headings: [{id: 'errors', title: 'Errors'}],
   render: () => headingSection('errors', 'Errors', body),
 };

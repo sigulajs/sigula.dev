@@ -1,11 +1,14 @@
 import {bindings} from './bindings';
+import {cheatsheet} from './cheatsheet';
+import {compare} from './compare';
+import {concepts} from './concepts';
 import {controlflow} from './controlflow';
-import {core} from './core';
+import {demo} from './demo';
 import {errors} from './errors';
 import {features} from './features';
 import {hero} from './hero';
+import {installation} from './installation';
 import {lowlevel} from './lowlevel';
-import {model} from './model';
 import {quickstart} from './quickstart';
 import {reactivity} from './reactivity';
 import {rendering} from './rendering';
@@ -17,8 +20,11 @@ export type {SectionMeta} from './types';
 export const sections: SectionMeta[] = [
   hero,
   features,
+  installation,
   quickstart,
-  core,
+  demo,
+  concepts,
+  cheatsheet,
   reactivity,
   templates,
   bindings,
@@ -26,7 +32,7 @@ export const sections: SectionMeta[] = [
   rendering,
   lowlevel,
   errors,
-  model,
+  compare,
 ];
 
 export interface NavGroup {
@@ -34,7 +40,12 @@ export interface NavGroup {
   items: SectionMeta[];
 }
 
-const groupOrder: SectionGroup[] = ['Introduction', 'Reference', 'Appendix'];
+const groupOrder: SectionGroup[] = [
+  'Introduction',
+  'Concepts',
+  'Reference',
+  'Appendix',
+];
 
 export const navGroups: NavGroup[] = groupOrder
   .map((name) => ({
