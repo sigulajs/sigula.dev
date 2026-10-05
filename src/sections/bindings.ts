@@ -4,10 +4,30 @@ import type {SectionMeta} from './types';
 const entries: ApiEntryData[] = [
   {
     name: 'patch',
-    signature: 'const patch: (...toPatchItems: ToAnyPatchItem[]) => Patch;',
+    signature:
+      'function patch(props: PatchProps, ...items: ToAnyPatchItem[]): Patch;\nfunction patch(...toPatchItems: ToAnyPatchItem[]): Patch;',
     description:
-      'Declares one or more bindings to apply to the same element. Must be interpolated in an attribute position. Each command (`id`, `val`, `attr`, ...) receives either a plain value (applied once) or a `Sig` (applied on mount and re-applied on change).',
-    example: {code: "html`<input ${patch(val(name), attr(placeholder, 'name'))} />`;"},
+      'Declares one or more bindings to apply to the same element; must be interpolated in an attribute position. The first argument may be a `PatchProps` object, desugared into commands in key order, optionally followed by command items. Each command receives a plain value (applied once) or a `Sig` (applied on mount and re-applied on change).',
+    example: {
+      code: "html`<input ${patch({val: name, placeholder: 'name'})} />`;\nhtml`<input ${patch(val(name), attr('name', placeholder))} />`;",
+    },
+  },
+  {
+    name: 'PatchProps',
+    description:
+      'Object form for `patch`, desugared into commands in key order: `id`, `val`, `class` (per entry, via `toggleClass`), `style` (per entry, via `style`), `styleProp` (per entry), `on` (per entry), and any other key via `attr`. A key whose value is `undefined` is skipped.',
+    table: {
+      headers: ['Key', 'Type', 'Applies'],
+      rows: [
+        ['id', 'Reactive<string>', "Sets the element's `id`."],
+        ['val', 'Reactive<string>', "Sets the element's `value` property."],
+        ['class', 'Record<string, Reactive<boolean>>', 'Toggles each class from the truthiness of its value.'],
+        ['style', 'Partial<Record<WritableStyleKey, Reactive<string>>>', 'Sets inline style properties by typed name.'],
+        ['styleProp', 'Record<string, Reactive<string>>', 'Sets style properties via `setProperty` (custom properties, untyped names).'],
+        ['on', '{[K in keyof HTMLElementEventMap]?: (ev) => void}', 'Registers DOM event listeners.'],
+        ['[attr: string]', 'unknown', 'Any other key is set as an attribute via `attr`.'],
+      ],
+    },
   },
   {
     name: 'id',
@@ -21,40 +41,40 @@ const entries: ApiEntryData[] = [
   },
   {
     name: 'attr',
-    signature: 'const attr: <T>(source: T | Sig<T>, key: string) => ToPatchItem<T>;',
+    signature: 'const attr: <T>(key: string, source: T | Sig<T>) => ToPatchItem<T>;',
     description:
-      'Sets attribute `key` from `source`. Note the argument order: value first, key second. Use this for boolean/ARIA/data attributes.',
+      'Sets attribute `key` from `source`. Note the argument order: key first, value second. Use this for boolean/ARIA/data attributes.',
   },
   {
     name: 'style',
-    signature: 'const style: <T>(source: T | Sig<T>, key: WritableStyleKey) => ToPatchItem<T>;',
+    signature: 'const style: <T>(key: WritableStyleKey, source: T | Sig<T>) => ToPatchItem<T>;',
     description: 'Sets an inline style property by typed name.',
-    example: {code: "html`<span ${patch(style(color, 'color'))}>text</span>`;"},
+    example: {code: "html`<span ${patch(style('color', color))}>text</span>`;"},
   },
   {
-    name: 'styleProperty',
-    signature: 'const styleProperty: <T>(source: T | Sig<T>, key: string) => ToPatchItem<T>;',
+    name: 'styleProp',
+    signature: 'const styleProp: <T>(key: string, source: T | Sig<T>) => ToPatchItem<T>;',
     description:
-      'Sets a style property via `CSSStyleDeclaration.setProperty`. Use this for custom properties (`--my-var`) or untyped names.',
-    example: {code: "html`<div ${patch(styleProperty(size, '--size'))}></div>`;"},
+      'Sets a style property via `CSSStyleDeclaration.setProperty`; use this for custom properties (`--my-var`) or untyped names.',
+    example: {code: "html`<div ${patch(styleProp('--size', size))}></div>`;"},
   },
   {
     name: 'toggleClass',
-    signature: 'const toggleClass: <T>(source: T | Sig<T>, token: string) => ToPatchItem<T>;',
+    signature: 'const toggleClass: <T>(token: string, source: T | Sig<T>) => ToPatchItem<T>;',
     description: 'Toggles a single class from the truthiness of the value.',
   },
   {
     name: 'toggleClasses',
-    signature: 'const toggleClasses: <T>(source: T | Sig<T>, ...tokens: string[]) => ToPatchItem<T>;',
+    signature: 'const toggleClasses: <T>(tokens: readonly string[], source: T | Sig<T>) => ToPatchItem<T>;',
     description: 'Toggles several classes from one value.',
   },
   {
     name: 'act',
     signature:
-      'type ActFn<T> = (node: Node, val?: T) => void;\nconst act: <T>(source: T | Sig<T>, fn: ActFn<T>) => ToPatchItem<T>;',
+      'type ActFn<T> = (elem: Element, val?: T) => void;\nconst act: <T>(source: T | Sig<T>, fn: ActFn<T>) => ToPatchItem<T>;',
     description:
-      'Runs arbitrary code with the bound node and value; runs on mount and again on change. The escape hatch for anything the built-in commands do not cover.',
-    example: {code: "html`<canvas ${patch(act(frame, (node, v) => draw(node, v)))}></canvas>`;"},
+      'Runs arbitrary code with the bound element and value; runs on mount and again on change. The escape hatch for anything the built-in commands do not cover.',
+    example: {code: "html`<canvas ${patch(act(frame, (el, v) => draw(el, v)))}></canvas>`;"},
   },
   {
     name: 'on',
@@ -65,11 +85,17 @@ const entries: ApiEntryData[] = [
     example: {code: "html`<button ${patch(on('click', () => count.trans((v) => v + 1)))}>+1</button>`;"},
   },
   {
-    name: 'Patch types',
+    name: 'Patch / PatchItem types',
     signature:
-      "interface PatchContext extends CmdContext {\n  node: Node;\n  extra?: unknown[];\n}\n\ninterface PatchItem<T> {\n  source: T | Sig<T>;\n  context: PatchContext;\n  cmd: Cmd<T, PatchContext>;\n}\n\ntype ToPatchItem<T> = (el: Element) => PatchItem<T>;\ntype AnyPatchItem = PatchItem<any>;\ntype ToAnyPatchItem = (el: Element) => AnyPatchItem;\n\ninterface Patch {\n  type: 'patch';\n  toPatchItems: ToAnyPatchItem[];\n}",
+      "interface Patch {\n  type: 'patch';\n  toPatchItems: ToAnyPatchItem[];\n  cleanBinds: () => void;\n}\n\ninterface PatchContext extends CmdContext {\n  node: Node;\n  extra?: unknown[];\n}\n\ninterface PatchItem<T> {\n  source: T | Sig<T>;\n  context: PatchContext;\n  cmd: Cmd<T, PatchContext>;\n}\n\ntype ToPatchItem<T> = (el: Element) => PatchItem<T>;\ntype AnyPatchItem = PatchItem<any>;\ntype ToAnyPatchItem = (el: Element) => AnyPatchItem;",
     description:
-      '`ToPatchItem` defers reading the target element until mount. `patch` collects these factories into a single `Patch`.',
+      '`ToPatchItem` defers reading the target element until mount. `patch` collects these factories into a single `Patch`; `cleanBinds` detaches the bindings created when the patch was committed.',
+  },
+  {
+    name: 'WritableStyleKey',
+    signature:
+      'type WritableStyleKey = { [K in keyof CSSStyleDeclaration]: CSSStyleDeclaration[K] extends string ? K : never; }[keyof CSSStyleDeclaration];',
+    description: 'The union of `CSSStyleDeclaration` keys whose values are strings.',
   },
 ];
 
@@ -79,6 +105,5 @@ export const bindings: SectionMeta = {
   id: 'bindings',
   title: 'DOM bindings',
   group: 'Reference',
-  headings: built.headings,
   render: () => headingSection('bindings', 'DOM bindings', built.render()),
 };

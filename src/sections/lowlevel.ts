@@ -11,7 +11,12 @@ const entries: ApiEntryData[] = [
     name: 'toBoundary',
     signature: 'const toBoundary: (node: Node) => Boundary;',
     description:
-      'Wraps a node in a `Boundary`. For a `DocumentFragment` the boundary spans its first and last child; otherwise it covers the node itself. Throws `E2` on an empty fragment.',
+      'Wraps a node in a `Boundary`. A `DocumentFragment` spans its first and last child; any other node covers itself. Throws `E2` on an empty fragment.',
+  },
+  {
+    name: 'walkBoundary',
+    signature: 'const walkBoundary: (b: Boundary, fn: (node: Node) => void) => void;',
+    description: 'Visits every node from `b.start` through `b.end`.',
   },
   {
     name: 'removeBoundary',
@@ -29,7 +34,18 @@ const entries: ApiEntryData[] = [
     signature:
       'interface CmdContext {\n  [key: string]: unknown;\n}\ntype Cmd<T, C extends CmdContext> = (val: T, context: C) => void;\ntype AnyCmd = Cmd<any, any>;',
     description:
-      'A `Cmd` is the unit of work a binding runs: it receives the current signal value and its context.',
+      'A `Cmd` is the unit of work a binding runs: it receives the current value and context.',
+  },
+  {
+    name: 'at',
+    signature: 'const at: <T>(arr: T[], index: number) => T;',
+    description: 'Reads `arr[index]`, throwing `E1:<index>` when it is out of range.',
+  },
+  {
+    name: 'err',
+    signature: 'function err(code: string): never;',
+    description:
+      'Throws an `Error` whose message is the short `code` (for example `E2` or `E11:1:2`). The full text for each code lives in the Errors section, so string tables stay out of the bundle.',
   },
 ];
 
@@ -39,6 +55,5 @@ export const lowlevel: SectionMeta = {
   id: 'low-level',
   title: 'Low-level API',
   group: 'Reference',
-  headings: built.headings,
   render: () => headingSection('low-level', 'Low-level API', built.render()),
 };

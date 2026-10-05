@@ -17,6 +17,5 @@ export const rendering: SectionMeta = {
   id: 'rendering',
   title: 'Rendering',
   group: 'Reference',
-  headings: built.headings,
   render: () => headingSection('rendering', 'Rendering', built.render()),
 };
