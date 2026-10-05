@@ -1,5 +1,4 @@
 import {
-  act,
   compute,
   html,
   on,
@@ -7,11 +6,10 @@ import {
   repeat,
   sig,
   style,
-  text,
-  val,
-  view,
   type Sig,
   type View,
+  val,
+  view,
 } from 'sigula';
 
 interface Todo {
@@ -24,29 +22,26 @@ export const Todos = (): View => {
   const input = sig('');
   const todos = sig<Todo[]>([]);
   const filter = sig<'all' | 'active' | 'done'>('all');
-  const revision = sig(0);
-  let nextId = 0;
 
-  const visible = compute({todos, filter, revision}, (v) => {
+  const visible = compute({todos, filter}, (v) => {
     switch (v.filter) {
       case 'active':
-        return v.todos.filter((item) => !item.done.get());
+        return v.todos.filter((t) => !t.done.get());
       case 'done':
-        return v.todos.filter((item) => item.done.get());
+        return v.todos.filter((t) => t.done.get());
       default:
         return v.todos;
     }
   });
 
-  const isEmpty = compute(visible, (v) => v.length === 0);
+  const isEmpty = compute(visible, (v) => v.length <= 0);
 
-  const addTodo = (event: Event): void => {
+  const add = (event: Event): void => {
     event.preventDefault();
-    const value = input.get().trim();
-    if (!value) return;
+    if (!input.get().trim()) return;
     todos.trans((items) => [
       ...items,
-      {id: nextId++, text: value, done: sig(false)},
+      {id: Date.now(), text: input.get().trim(), done: sig(false)},
     ]);
     input.update('');
   };
@@ -57,27 +52,24 @@ export const Todos = (): View => {
 
   const toggle = (item: Todo): void => {
     item.done.trans((v) => !v);
-    revision.trans((r) => r + 1);
+    todos.notify();
   };
 
   const itemView = (item: Todo): View => html`<li class="flex items-center justify-between gap-2 border-b border-[var(--border)] py-1.5 last:border-0">
-    <label class="flex items-center gap-2">
-      <input type="checkbox" ${patch(
-        act(item.done, (node, value) => {
-          if (node instanceof HTMLInputElement) node.checked = Boolean(value);
-        }),
-        on('change', () => toggle(item)),
-      )} />
-      <span ${patch(style('textDecoration', compute(item.done, (v): string => (v ? 'line-through' : 'none'))))}>${text(item.text)}</span>
-    </label>
+    <span
+      ${patch(
+        on('click', () => toggle(item)),
+        style('textDecoration', compute(item.done, (v): string => (v ? 'line-through' : 'none'))),
+      )}
+      class="cursor-pointer select-none"
+    >${item.text}</span>
     <button ${patch(on('click', () => remove(item.id)))} class="rounded-md px-2 text-[var(--text)] transition hover:text-[var(--accent)]">×</button>
   </li>`;
 
-  const filterButton = (value: 'all' | 'active' | 'done'): View => html`<button type="button" ${patch(on('click', () => filter.update(value)))} class="rounded-md border border-[var(--border)] px-2 py-0.5 text-xs text-[var(--text)] capitalize transition hover:border-[var(--accent-border)]">${text(value)}</button>`;
+  const filterButton = (value: 'all' | 'active' | 'done'): View => html`<button type="button" ${patch(on('click', () => filter.update(value)))} class="rounded-md border border-[var(--border)] px-2 py-0.5 text-xs text-[var(--text)] capitalize transition hover:border-[var(--accent-border)]">${value}</button>`;
 
   return html`<div class="rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] p-4">
-    <h3 class="mb-3 font-mono text-sm font-semibold text-[var(--text-h)]">Todos</h3>
-    <form ${patch(on('submit', addTodo))} class="flex gap-2">
+    <form ${patch(on('submit', add))} class="flex gap-2">
       <input ${patch(
         val(input),
         on('input', (event) => {
@@ -94,10 +86,7 @@ export const Todos = (): View => {
       empty
         ? html`<p class="py-4 text-center text-sm text-[var(--text)]">Nothing here yet.</p>`
         : html`<ul>
-            ${repeat(visible, {
-              key: (item) => String(item.id),
-              view: (item) => itemView(item),
-            })}
+            ${repeat(visible, {key: (item) => String(item.id), view: (item) => itemView(item)})}
           </ul>`,
     )}
   </div>`;
