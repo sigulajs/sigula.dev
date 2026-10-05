@@ -26,8 +26,8 @@ export const Toc = (active: Sig<string>, activeHeading: Sig<string>): View => {
               view: (item) => html`<li>
                 <a
                   ${patch(
-                    attr(`#${item.id}`, 'href'),
-                    toggleClass(compute(activeHeading, (id) => id === item.id), 'active'),
+                    attr('href', `#${item.id}`),
+                    toggleClass('active', compute(activeHeading, (id) => id === item.id)),
                   )}
                   class="toc-link"
                 >${text(item.title)}</a>

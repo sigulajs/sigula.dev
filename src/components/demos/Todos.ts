@@ -68,7 +68,7 @@ export const Todos = (): View => {
         }),
         on('change', () => toggle(item)),
       )} />
-      <span ${patch(style(compute(item.done, (v): string => (v ? 'line-through' : 'none')), 'textDecoration'))}>${text(item.text)}</span>
+      <span ${patch(style('textDecoration', compute(item.done, (v): string => (v ? 'line-through' : 'none'))))}>${text(item.text)}</span>
     </label>
     <button ${patch(on('click', () => remove(item.id)))} class="rounded-md px-2 text-[var(--text)] transition hover:text-[var(--accent)]">×</button>
   </li>`;

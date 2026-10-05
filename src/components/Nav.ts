@@ -24,8 +24,8 @@ export const Nav = (active: Sig<string>): View =>
             view: (item: SectionMeta) => html`<li>
               <a
                 ${patch(
-                  attr(`#${item.id}`, 'href'),
-                  toggleClass(compute(active, (id) => id === item.id), 'active'),
+                  attr('href', `#${item.id}`),
+                  toggleClass('active', compute(active, (id) => id === item.id)),
                 )}
                 class="nav-link"
               >${text(item.title)}</a>
