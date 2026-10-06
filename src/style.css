@@ -184,7 +184,7 @@ a {
 
 .code-collapsed {
   max-height: 22rem;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 .hljs {
