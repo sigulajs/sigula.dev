@@ -2,7 +2,7 @@
   <title>Sigula</title>
   <defs>
     <filter id="glow" x="-60%" y="-40%" width="220%" height="180%">
-      <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#60a5fa" flood-opacity="0.9"/>
+      <feDropShadow dx="1.2" dy="1.4" stdDeviation="1.5" flood-color="#60a5fa" flood-opacity="0.9"/>
     </filter>
   </defs>
   <path d="M32 5c-4 0-7 2-9 6l-5 11c-2 3 0 6 4 6h5l-6 11c-2 4 2 7 6 5 3-2 5-5 6-9l3-6c2-3-1-6-4-6h-4l7-13c2-3 1-5-3-5z" fill="#1e3a8a" stroke="#93c5fd" stroke-width="1" filter="url(#glow)"/>
