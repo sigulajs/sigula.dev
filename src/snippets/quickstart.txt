@@ -1,39 +1,13 @@
-import {compute, html, on, patch, render, repeat, sig, text, val, view} from 'sigula';
+import {html, list, repeat, sig, text} from 'sigula';
 
-interface Todo { id: number; text: string; done: boolean }
+const fruits = ['apple', 'banana', 'cherry'];      // static — rendered once
+const todos = sig([{id: 1, label: 'write docs'}]); // reactive — keyed
 
-const app = document.querySelector('#app')!;
+html`<div>
+  <ul>${list(fruits, (fruit) => html`<li>${fruit}</li>`)}</ul>
 
-const Todos = () => {
-  const input = sig('');
-  const todos = sig<Todo[]>([]);
-  const filter = sig<'all' | 'active'>('all');
-
-  const visible = compute({todos, filter}, (v) =>
-    v.filter === 'active' ? v.todos.filter((t) => !t.done) : v.todos,
-  );
-  const isEmpty = compute(visible, (v) => v.length === 0);
-
-  const add = (e: Event) => {
-    e.preventDefault();
-    if (!input.get().trim()) return;
-    todos.trans((items) => [...items, {id: Date.now(), text: input.get().trim(), done: false}]);
-    input.update('');
-  };
-
-  return html`<form ${patch(on('submit', add))}>
-      <input ${patch(val(input), on('change', (e) => input.update((e.target as HTMLInputElement).value)))} />
-      <button>Add</button>
-    </form>
-    ${view(isEmpty, (empty) =>
-      empty
-        ? text('Nothing here yet')
-        : html`<ul>${repeat(visible, {
-            key: (t) => t.id.toString(),
-            view: (t) => html`<li>${text(t.text)}</li>`,
-          })}</ul>`,
-    )}`;
-};
-
-const dispose = render(Todos(), app);
-dispose(); // detaches every binding and removes the nodes
+  <ul>${repeat(todos, {
+    key: (t) => String(t.id),
+    view: (t) => html`<li>${text(t.label)}</li>`,
+  })}</ul>
+</div>`;

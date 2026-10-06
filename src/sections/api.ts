@@ -1,29 +1,4 @@
-import {html, id, list, patch, text, type View} from 'sigula';
-import {ApiEntry, type ApiEntryProps} from '../components/ApiEntry';
-
-export type ApiEntryData = Omit<ApiEntryProps, 'anchorId'>;
-
-export const slug = (value: string): string =>
-  value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-
-export const buildApiSection = (
-  sectionId: string,
-  entries: ApiEntryData[],
-): {render: () => View} => {
-  const items = entries.map((entry) => ({
-    anchorId: `${sectionId}-${slug(entry.name)}`,
-    entry,
-  }));
-  return {
-    render: (): View =>
-      html`<div>
-        ${list(items, (item) => ApiEntry({anchorId: item.anchorId, ...item.entry}))}
-      </div>`,
-  };
-};
+import {html, id, patch, text, type View} from 'sigula';
 
 export const headingSection = (
   sectionId: string,

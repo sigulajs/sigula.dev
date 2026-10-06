@@ -1,20 +1,6 @@
 import {html, type View} from 'sigula';
 import {Badge} from '../components/Badge';
-import {CodeBlock} from '../components/CodeBlock';
-import {CopyButton} from '../components/CopyButton';
 import type {SectionMeta} from './types';
-
-const snippet = [
-  "import {html, on, patch, render, sig} from 'sigula';",
-  '',
-  'const count = sig(0);',
-  '',
-  'render(',
-  '  html`<p>${count}</p>',
-  "       <button ${patch(on('click', () => count.trans((v) => v + 1)))}>+1</button>`,",
-  "  document.querySelector('#app')!,",
-  ');',
-].join('\n');
 
 export const hero: SectionMeta = {
   id: 'overview',
@@ -32,10 +18,5 @@ export const hero: SectionMeta = {
       <a href="#quick-start" class="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white transition hover:opacity-90">Get started</a>
       <a href="https://github.com/sigulajs/sigula" class="rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-h)] transition hover:border-[var(--accent-border)]">GitHub</a>
     </div>
-    <div class="mt-6 flex items-center justify-between gap-3 rounded-lg border border-[var(--border)] bg-[var(--code-bg)] px-4 py-3">
-      <code class="font-mono text-sm text-[var(--text-h)]">npm install sigula</code>
-      ${CopyButton('npm install sigula')}
-    </div>
-    <div class="mt-6 max-w-3xl">${CodeBlock({code: snippet, lang: 'typescript', filename: 'main.ts'})}</div>
   </section>`,
 };

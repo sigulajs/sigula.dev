@@ -6,21 +6,12 @@ import type {SectionMeta} from './types';
 
 const code = (lines: string[]): string => lines.join('\n');
 
-const architecture = code([
-  '        ┌──────────────── Core Concepts ────────────────┐',
-  '        │                                               │',
-  '  Sig ──┤  holds a value + a list of Binds              │  state',
-  '        │                                               │',
-  '  Bind ─┤  { sig, context, cmd }                        │  the edge',
-  '        │                                               │',
-  '  Cmd ──┤  (value, context) => void                     │  the work',
-  '        │                                               │',
-  '  View ─┤  { node, boundary(), cleanBinds() }           │  DOM region',
-  '  Patch ┤  deferred commands for one element            │',
-  '        │                                               │',
-  '  Queue ┤  one global microtask, coalesced per Bind     │  scheduling',
-  '        └───────────────────────────────────────────────┘',
-]);
+const piece = (name: string, role: string, desc: string): View =>
+  html`<div class="p-4">
+    <div class="text-[11px] font-semibold uppercase tracking-wider text-[var(--accent)]">${role}</div>
+    <div class="mt-1 font-mono text-sm font-semibold text-[var(--text-h)]">${name}</div>
+    <div class="mt-1 text-xs leading-relaxed text-[var(--text)]">${desc}</div>
+  </div>`;
 
 const signals = code([
   'const count = sig(0);',
@@ -94,7 +85,15 @@ const queue = code([
 
 const body = html`<div>
   <h3 id="concepts-architecture" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">The whole architecture in one picture</h3>
-  ${CodeBlock({code: architecture, lang: 'bash'})}
+  <div class="not-prose my-5 overflow-hidden rounded-xl border border-[var(--border)]">
+    <div class="grid divide-y divide-[var(--border)] @2xl:grid-cols-5 @2xl:divide-x @2xl:divide-y-0">
+      ${piece('Sig', 'state', 'holds a value + a list of Binds')}
+      ${piece('Bind', 'the edge', '{ sig, context, cmd }')}
+      ${piece('Cmd', 'the work', '(value, context) => void')}
+      ${piece('View / Patch', 'the DOM', 'a DOM region / deferred element commands')}
+      ${piece('Queue', 'scheduling', 'one microtask, coalesced per Bind')}
+    </div>
+  </div>
   <p class="leading-relaxed text-[var(--text)]">Everything else in the library is a convenience layer over these five pieces: a signal holds a value and a list of bindings; a binding is <code>{sig, context, cmd}</code>; a command does the work; a view is a DOM region; and a patch is a set of deferred commands for one element.</p>
 
   <h3 id="concepts-signals" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Signals: sig</h3>
@@ -165,5 +164,17 @@ export const concepts: SectionMeta = {
   id: 'core-concepts',
   title: 'Core Concepts',
   group: 'Concepts',
+  subs: [
+    {id: 'concepts-architecture', title: 'Architecture'},
+    {id: 'concepts-signals', title: 'Signals: sig'},
+    {id: 'concepts-bindings', title: 'Bindings'},
+    {id: 'concepts-derived', title: 'Derived: compute'},
+    {id: 'concepts-templates', title: 'Templates: html'},
+    {id: 'concepts-patch', title: 'Patching: patch'},
+    {id: 'concepts-control-flow', title: 'Control flow'},
+    {id: 'concepts-boundaries', title: 'Boundaries & teardown'},
+    {id: 'concepts-queue', title: 'The update queue'},
+    {id: 'concepts-not-included', title: 'What it omits'},
+  ],
   render: (): View => headingSection('core-concepts', 'Core Concepts', body),
 };

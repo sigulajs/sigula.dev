@@ -142,6 +142,21 @@ a {
   color: var(--accent);
 }
 
+.nav-sub {
+  display: block;
+  border-radius: 6px;
+  padding: 3px 12px 3px 26px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 1.4;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-sub:hover {
+  color: var(--text-h);
+}
+
 .hljs {
   color: var(--text-h);
   background: transparent;

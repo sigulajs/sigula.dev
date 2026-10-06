@@ -2,6 +2,7 @@ import {
   attr,
   compute,
   html,
+  list,
   patch,
   repeat,
   sig,
@@ -29,6 +30,7 @@ export const Nav = (active: Sig<string>): View =>
                 )}
                 class="nav-link"
               >${text(item.title)}</a>
+              ${list(item.subs ?? [], (sub) => html`<a ${patch(attr('href', `#${sub.id}`))} class="nav-sub">${text(sub.title)}</a>`)}
             </li>`,
           })}
         </ul>

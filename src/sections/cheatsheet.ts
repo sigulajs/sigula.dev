@@ -4,7 +4,10 @@ import {headingSection} from './api';
 import type {SectionMeta} from './types';
 
 const body = html`<div>
-  <p class="leading-relaxed text-[var(--text)]">All exports are named exports from sigula. Full signatures live in the reference sections that follow.</p>
+  <p class="leading-relaxed text-[var(--text)]">All exports are named exports from sigula. This page is a quick map; the generated API reference has full signatures and TSDoc for every export.</p>
+  <div class="not-prose my-5">
+    <a href="https://github.com/sigulajs/sigula/blob/main/Reference.md" class="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-h)] transition hover:border-[var(--accent-border)]">Full API reference (Reference.md) →</a>
+  </div>
   ${ApiTable({
     headers: ['Export', 'Kind', 'Returns'],
     rows: [
