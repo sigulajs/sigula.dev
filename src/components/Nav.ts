@@ -14,7 +14,7 @@ import {
 } from 'sigula';
 import {type SectionMeta, navGroups} from '../sections';
 
-export const Nav = (active: Sig<string>): View =>
+export const Nav = (active: Sig<string>, activeHeading: Sig<string>): View =>
   html`<nav aria-label="Documentation">
     ${repeat(sig(navGroups), {
       key: (group) => group.name,
@@ -33,7 +33,13 @@ export const Nav = (active: Sig<string>): View =>
               >${item.title}</a>
               ${view(compute(active, (id) => id === item.id), (isActive) =>
                 isActive
-                  ? list(item.subs ?? [], (sub) => html`<a ${patch(attr('href', `#${sub.id}`))} class="nav-sub">${sub.title}</a>`)
+                  ? list(item.subs ?? [], (sub) => html`<a
+                      ${patch(
+                        attr('href', `#${sub.id}`),
+                        toggleClass('active', compute(activeHeading, (id) => id === sub.id)),
+                      )}
+                      class="nav-sub"
+                    >${sub.title}</a>`)
                   : text(''),
               )}
             </li>`,

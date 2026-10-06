@@ -19,6 +19,7 @@ import {Nav} from './Nav';
 export interface LayoutProps {
   sections: SectionMeta[];
   activeSection: Sig<string>;
+  activeHeading: Sig<string>;
 }
 
 const GitHubIcon = (): View =>
@@ -69,7 +70,11 @@ const Header = (
   </div>
 </header>`;
 
-const MobileNav = (open: Sig<boolean>, active: Sig<string>): AnyView =>
+const MobileNav = (
+  open: Sig<boolean>,
+  active: Sig<string>,
+  activeHeading: Sig<string>,
+): AnyView =>
   view(open, (isOpen) =>
     isOpen
       ? html`<div
@@ -86,13 +91,13 @@ const MobileNav = (open: Sig<boolean>, active: Sig<string>): AnyView =>
               }),
             )}
           >
-            ${Nav(active)}
+            ${Nav(active, activeHeading)}
           </div>
         </div>`
       : text(''),
   );
 
-export const Layout = ({sections, activeSection}: LayoutProps): View => {
+export const Layout = ({sections, activeSection, activeHeading}: LayoutProps): View => {
   const mobileOpen = sig(false);
   const content = html`<div>
     ${repeat(sig(sections), {
@@ -105,7 +110,7 @@ export const Layout = ({sections, activeSection}: LayoutProps): View => {
       ${Header(mobileOpen)}
       <div class="mx-auto flex w-full max-w-[1100px] items-start gap-8 px-4 py-8 @3xl:px-6">
         <aside class="sticky top-14 hidden max-h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto @3xl:block">
-          ${Nav(activeSection)}
+          ${Nav(activeSection, activeHeading)}
         </aside>
         <main class="min-w-0 flex-1">${content}</main>
       </div>
@@ -113,6 +118,6 @@ export const Layout = ({sections, activeSection}: LayoutProps): View => {
         <p>sigula — MIT License · zjh · <a href="https://github.com/sigulajs/sigula" class="hover:underline">GitHub</a></p>
       </footer>
     </div>
-    ${MobileNav(mobileOpen, activeSection)}
+    ${MobileNav(mobileOpen, activeSection, activeHeading)}
   </div>`;
 };
