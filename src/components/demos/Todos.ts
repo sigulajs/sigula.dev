@@ -19,10 +19,14 @@ interface Todo {
 }
 
 export const Todos = (): View => {
-  const input = sig('');
-  const todos = sig<Todo[]>([]);
+  // --- State ---
+  const input = sig(''); // what the user is typing
+  const todos = sig<Todo[]>([]); // the list; each todo's `done` is its own signal
   const filter = sig<'all' | 'active' | 'done'>('all');
 
+  // --- Derived state ---
+  // compute() re-runs when todos or filter change. It also reads each todo's
+  // nested `done` signal, so toggling one must call todos.notify() (see toggle).
   const visible = compute({todos, filter}, (v) => {
     switch (v.filter) {
       case 'active':
@@ -34,8 +38,11 @@ export const Todos = (): View => {
     }
   });
 
+  // An empty list is a separate derived signal so the view can swap cleanly.
   const isEmpty = compute(visible, (v) => v.length <= 0);
 
+  // --- Actions ---
+  // trans() replaces the array with a new one, so the signal sees a new value.
   const add = (event: Event): void => {
     event.preventDefault();
     if (!input.get().trim()) return;
@@ -50,11 +57,15 @@ export const Todos = (): View => {
     todos.trans((items) => items.filter((item) => item.id !== id));
   };
 
+  // Flip the todo's own `done` signal, then notify() the list so the derived
+  // `visible` list recomputes (nested signal reads are not tracked by compute).
   const toggle = (item: Todo): void => {
     item.done.trans((v) => !v);
     todos.notify();
   };
 
+  // One row per todo: clicking the label toggles it, and style() keeps the
+  // strikethrough in sync with the todo's `done` signal.
   const itemView = (item: Todo): View => html`<li class="flex items-center justify-between gap-2 border-b border-[var(--border)] py-1.5 last:border-0">
     <span
       ${patch(
@@ -68,6 +79,10 @@ export const Todos = (): View => {
 
   const filterButton = (value: 'all' | 'active' | 'done'): View => html`<button type="button" ${patch(on('click', () => filter.update(value)))} class="rounded-md border border-[var(--border)] px-2 py-0.5 text-xs text-[var(--text)] capitalize transition hover:border-[var(--accent-border)]">${value}</button>`;
 
+  // --- View ---
+  // val(input) keeps the field's value in sync; view(isEmpty) swaps between the
+  // empty message and the list; repeat() keys items by id, moving the fewest
+  // nodes when the list changes.
   return html`<div class="rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] p-4">
     <form ${patch(on('submit', add))} class="flex gap-2">
       <input ${patch(
