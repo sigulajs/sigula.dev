@@ -92,7 +92,7 @@ export const Todos = (): View => {
           if (target instanceof HTMLInputElement) input.update(target.value);
         }),
       )} placeholder="What needs doing?" class="min-w-0 flex-1 rounded-md border border-[var(--border)] bg-[var(--bg)] px-2 py-1 text-sm text-[var(--text-h)] outline-none focus:border-[var(--accent-border)]" />
-      <button type="submit" class="rounded-md bg-[var(--accent-strong)] px-3 py-1 text-sm font-medium text-white transition hover:opacity-90">Add</button>
+      <button type="submit" class="rounded-md bg-gradient-to-r from-[var(--accent-strong)] to-[var(--accent-strong-to)] px-3 py-1 text-sm font-medium text-white transition hover:opacity-90">Add</button>
     </form>
     <div class="my-3 flex gap-1">
       ${filterButton('all')}${filterButton('active')}${filterButton('done')}
