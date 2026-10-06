@@ -71,8 +71,10 @@ const coercion = code([
 ]);
 
 const patching = code([
+  '// Props form — desugared into commands',
   "html`<input ${patch({id: 'name', val: name, placeholder: 'Your name'})} />`",
   '',
+  '// Command form',
   "html`<input ${patch(val(name), attr('placeholder', placeholder))} />`",
 ]);
 
@@ -182,8 +184,9 @@ const body = html`<div>
   <p class="leading-relaxed text-[var(--text)]">The returned <code>View</code> is <code>{node, children, boundary(), cleanBinds()}</code> — see <a href="#concepts-boundaries" class="text-[var(--accent)] hover:underline">Boundaries</a>.</p>
 
   <h3 id="concepts-patch" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Patching an element: patch</h3>
-  <p class="leading-relaxed text-[var(--text)]"><code>patch</code> declares bindings for one element, as a props object, a list of command items, or both. The props object handles <code>id</code>, <code>val</code>, <code>class</code>, <code>style</code>, <code>styleProp</code>, and <code>on</code>; any other key becomes an attribute, and a key whose value is <code>undefined</code> is skipped.</p>
+  <p class="leading-relaxed text-[var(--text)]"><code>patch</code> declares bindings to apply to <strong class="text-[var(--text-h)]">one</strong> element. It accepts either a props object, or a list of command items, or both:</p>
   ${CodeBlock({code: patching, lang: 'typescript'})}
+  <p class="leading-relaxed text-[var(--text)]">The props object handles <code>id</code>, <code>val</code>, <code>class</code>, <code>style</code>, <code>styleProp</code>, <code>on</code>; any other key becomes an attribute. A key whose value is <code>undefined</code> is skipped.</p>
   ${ApiTable({
     headers: ['Command', 'What it does'],
     rows: [
@@ -198,9 +201,9 @@ const body = html`<div>
       ['`act(source, fn)`', 'Escape hatch: run arbitrary code with `(element, value)`.'],
     ],
   })}
-  <p class="leading-relaxed text-[var(--text)]">Every command takes a plain value (applied once at mount) or a <code>Sig</code> (applied at mount and re-applied on change):</p>
+  <p class="leading-relaxed text-[var(--text)]">Every command takes a plain value (applied once at mount) <strong class="text-[var(--text-h)]">or</strong> a <code>Sig</code> (applied at mount and re-applied on change):</p>
   ${CodeBlock({code: patchValues, lang: 'typescript'})}
-  <p class="leading-relaxed text-[var(--text)]"><code>on</code> registers the listener once at mount; the listener itself is not a reactive source. Drive updates by writing to a signal inside it.</p>
+  <p class="leading-relaxed text-[var(--text)]">Note that <code>on</code> registers the listener <strong class="text-[var(--text-h)]">once at mount</strong>; the listener itself is not a reactive source. Drive updates by writing to a signal inside it.</p>
 
   <h3 id="concepts-control-flow" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Control flow</h3>
   <p class="leading-relaxed text-[var(--text)]">Four helpers, all returning a <code>View</code>:</p>
