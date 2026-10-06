@@ -1,12 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="14 1 26 46" fill="none">
   <title>Sigula</title>
-  <defs>
-    <linearGradient id="bg" x1="2" y1="2" x2="46" y2="46" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#1e3a8a"/>
-      <stop offset="1" stop-color="#2563eb"/>
-    </linearGradient>
-  </defs>
-  <rect x="2" y="2" width="44" height="44" rx="11" fill="url(#bg)"/>
-  <path d="M32 15.5c-2.6-3.4-6.4-4.7-9.9-3.8-3.6 1-5.8 4.2-5.1 7.4.7 3.2 4.4 4.4 8 5.2 3.6.8 7.3 2 8 5.2.7 3.2-1.5 6.4-5.1 7.4-3.5.9-7.3-.4-9.9-3.8" stroke="#dbeafe" stroke-width="5" stroke-linecap="round"/>
-  <path d="M27 9 15 27h8l-3 12 14-19h-8l4-9z" fill="#facc15" stroke="#1e3a8a" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M32 5c-4 0-7 2-9 6l-5 11c-2 3 0 6 4 6h5l-6 11c-2 4 2 7 6 5 3-2 5-5 6-9l3-6c2-3-1-6-4-6h-4l7-13c2-3 1-5-3-5z" fill="#1e3a8a"/>
 </svg>
