@@ -136,8 +136,8 @@ const body = html`<div>
       ['`addBind` / `removeBind` / `getBinds`', 'Low-level binding management; prefer `createBind` or the template APIs.'],
     ],
   })}
-  <p class="leading-relaxed text-[var(--text)]">Equality is deep by default: <code>update</code> compares with <code>eq</code>, delegating to <code>a.equals(b)</code> when the value implements <code>Equatable</code>. <code>sig(v, {eq})</code> accepts a custom comparator.</p>
-  <p class="leading-relaxed text-[var(--text)]">In-place mutation needs <code>notify()</code>. Sigula does not proxy your objects, so mutating a held array or object is invisible to <code>update</code>:</p>
+  <p class="leading-relaxed text-[var(--text)]"><strong class="text-[var(--text-h)]">Equality is deep by default:</strong> <code>update</code> compares with <code>eq</code>, delegating to <code>a.equals(b)</code> when the value implements <code>Equatable</code>. <code>sig(v, {eq})</code> accepts a custom comparator.</p>
+  <p class="leading-relaxed text-[var(--text)]"><strong class="text-[var(--text-h)]">In-place mutation needs</strong> <code>notify()</code>. Sigula does not proxy your objects, so mutating a held array or object is invisible to <code>update</code>:</p>
   ${CodeBlock({code: mutation, lang: 'typescript'})}
 
   <h3 id="concepts-bindings" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Bindings: the unit of reactivity</h3>
