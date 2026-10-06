@@ -60,6 +60,14 @@ a {
   color: var(--accent);
 }
 
+main p {
+  margin: 1.25rem 0;
+}
+
+main ul {
+  margin: 1.25rem 0;
+}
+
 .prose {
   font-size: 16px;
   line-height: 1.7;
