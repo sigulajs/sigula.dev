@@ -9,8 +9,8 @@
       <stop stop-color="#3b82f6"/>
       <stop offset="1" stop-color="#7dd3fc"/>
     </linearGradient>
-    <filter id="glow" x="-60%" y="-40%" width="220%" height="180%">
-      <feDropShadow dx="1.2" dy="1.4" stdDeviation="1.5" flood-color="#60a5fa" flood-opacity="0.9"/>
+    <filter id="glow" x="-30%" y="-20%" width="220%" height="180%">
+      <feDropShadow dx="7" dy="3" stdDeviation="0" flood-color="#ccc" flood-opacity="0.9"/>
     </filter>
     <style>
       .bolt{fill:url(#lg);stroke:#93c5fd;stroke-width:1}
