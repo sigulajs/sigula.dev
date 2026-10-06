@@ -73,6 +73,7 @@ export const quickstart: SectionMeta = {
     <h3 id="quickstart-3" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">3. Handle events and patch attributes</h3>
     ${CodeBlock({code: step3, lang: 'typescript', filename: 'main.ts'})}
     <p class="leading-relaxed text-[var(--text)]">Text belongs in a content position, but dynamic attributes belong in an attribute position and must be wrapped in <code>patch(...)</code>. Here <code>compute</code> derives <code>color</code> from <code>count</code>, and <code>style('color', color)</code> keeps the inline style in sync. <code>on('click', …)</code> registers the listener once at mount; writing to a signal inside it is what drives updates.</p>
+    <p class="mt-2 text-sm"><a href="#concepts-patch" class="text-[var(--accent)] hover:underline">Read more about patch →</a></p>
 
     <h3 id="quickstart-4" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">4. Split into components</h3>
     ${CodeBlock({code: step4, lang: 'typescript', filename: 'counter.ts'})}
