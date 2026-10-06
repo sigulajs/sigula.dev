@@ -192,6 +192,15 @@ a {
   overflow-y: auto;
 }
 
+:not(pre) > code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  background: var(--code-bg);
+  color: var(--text-h);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
 .hljs {
   color: var(--text-h);
   background: transparent;

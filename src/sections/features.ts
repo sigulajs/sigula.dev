@@ -1,4 +1,5 @@
 import {html, list, type View} from 'sigula';
+import {rich} from '../components/rich';
 import type {SectionMeta} from './types';
 
 const items: {title: string; body: string}[] = [
@@ -16,7 +17,7 @@ const items: {title: string; body: string}[] = [
   },
   {
     title: 'Native string templates',
-    body: 'html is a tagged template over plain JavaScript strings. No compiler, no JSX transform.',
+    body: '`html` is a tagged template over plain JavaScript strings. No compiler, no JSX transform.',
   },
   {
     title: 'Batched, coalesced updates',
@@ -32,7 +33,7 @@ const items: {title: string; body: string}[] = [
   },
   {
     title: 'Zero tooling',
-    body: 'ESM-only, sideEffects: false, no build step required to author components.',
+    body: 'ESM-only, `sideEffects: false`, no build step required to author components.',
   },
 ];
 
@@ -43,7 +44,7 @@ export const features: SectionMeta = {
   render: (): View => html`<section id="features" class="scroll-mt-24 pt-12">
     <h2 class="text-3xl font-semibold tracking-tight text-[var(--text-h)]">Features</h2>
     <ul class="mt-6 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-[var(--text)]">
-      ${list(items, (item) => html`<li><strong class="font-semibold text-[var(--text-h)]">${item.title}.</strong> ${item.body}</li>`)}
+      ${list(items, (item) => html`<li><strong class="font-semibold text-[var(--text-h)]">${item.title}.</strong> ${rich(item.body)}</li>`)}
     </ul>
   </section>`,
 };

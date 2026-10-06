@@ -14,10 +14,10 @@ const body = html`<div>
     <div>
       <p class="text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">How it works</p>
       <ol class="mt-3 list-decimal space-y-2 pl-6 text-sm leading-relaxed text-[var(--text)]">
-        <li><strong class="text-[var(--text-h)]">State.</strong> Two writable signals, x and y, hold the inputs.</li>
-        <li><strong class="text-[var(--text-h)]">Derive.</strong> compute({x, y}, …) produces sum, difference, product, quotient and x² − y². Each derived signal recomputes only when x or y changes.</li>
+        <li><strong class="text-[var(--text-h)]">State.</strong> Two writable signals, <code>x</code> and <code>y</code>, hold the inputs.</li>
+        <li><strong class="text-[var(--text-h)]">Derive.</strong> <code>compute({x, y}, …)</code> produces sum, difference, product, quotient and x² − y². Each derived signal recomputes only when <code>x</code> or <code>y</code> changes.</li>
         <li><strong class="text-[var(--text-h)]">Bind.</strong> Every result is interpolated into the template, so Sigula keeps a binding from the signal to that exact text node.</li>
-        <li><strong class="text-[var(--text-h)]">Update.</strong> The +1 / −1 buttons call x.trans / y.trans to write a new value; queued bindings then update only the affected nodes.</li>
+        <li><strong class="text-[var(--text-h)]">Update.</strong> The +1 / −1 buttons call <code>x.trans</code> / <code>y.trans</code> to write a new value; queued bindings then update only the affected nodes.</li>
       </ol>
     </div>
     <div>
@@ -32,10 +32,10 @@ const body = html`<div>
     <div>
       <p class="text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">How it works</p>
       <ol class="mt-3 list-decimal space-y-2 pl-6 text-sm leading-relaxed text-[var(--text)]">
-        <li><strong class="text-[var(--text-h)]">State.</strong> input, todos, and filter are signals, and each todo's done flag is itself a signal.</li>
-        <li><strong class="text-[var(--text-h)]">Derive.</strong> visible = compute({todos, filter}, …) filters the list, and isEmpty = compute(visible, …) drives the empty state.</li>
-        <li><strong class="text-[var(--text-h)]">Mutate.</strong> Adding and removing replace the todos array via trans; toggling a todo flips its done signal and calls todos.notify() so the derived list recomputes.</li>
-        <li><strong class="text-[var(--text-h)]">Render.</strong> view(isEmpty) swaps between the empty message and the list, and repeat keys items by id so only the necessary nodes move.</li>
+        <li><strong class="text-[var(--text-h)]">State.</strong> <code>input</code>, <code>todos</code>, and <code>filter</code> are signals, and each todo's <code>done</code> flag is itself a signal.</li>
+        <li><strong class="text-[var(--text-h)]">Derive.</strong> <code>visible = compute({todos, filter}, …)</code> filters the list, and <code>isEmpty = compute(visible, …)</code> drives the empty state.</li>
+        <li><strong class="text-[var(--text-h)]">Mutate.</strong> Adding and removing replace the <code>todos</code> array via <code>trans</code>; toggling a todo flips its <code>done</code> signal and calls <code>todos.notify()</code> so the derived list recomputes.</li>
+        <li><strong class="text-[var(--text-h)]">Render.</strong> <code>view(isEmpty)</code> swaps between the empty message and the list, and <code>repeat</code> keys items by <code>id</code> so only the necessary nodes move.</li>
       </ol>
     </div>
     <div>
