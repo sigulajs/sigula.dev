@@ -100,7 +100,7 @@ export const CodeBlock = ({
       <span class="font-mono text-xs text-[var(--text)]">${title}</span>
       ${CopyButton(source, 'Copy')}
     </div>
-    <pre class="overflow-x-auto p-4 text-[13px] leading-relaxed" ${prePatch}><code class="hljs">${raw(highlighted)}</code></pre>
+    <pre class="whitespace-pre-wrap break-words p-4 text-[13px] leading-relaxed" ${prePatch}><code class="hljs">${raw(highlighted)}</code></pre>
     ${toggle}
   </div>`;
 };
