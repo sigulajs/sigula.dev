@@ -15,7 +15,7 @@ export const hero: SectionMeta = {
     <h1 class="mt-4 text-4xl font-semibold tracking-tight text-[var(--text-h)] @3xl:text-5xl">Tiny web framework with fine-grained signal reactivity</h1>
     <p class="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--text)]">A minimal, signal-based web framework with fine-grained reactivity. No virtual DOM — just direct, minimal updates to the real DOM.</p>
     <div class="mt-6 flex flex-wrap gap-3">
-      <a href="#quick-start" class="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-white transition hover:opacity-90">Get started</a>
+      <a href="#quick-start" class="rounded-lg bg-[var(--accent-strong)] px-4 py-2 text-sm font-medium text-white transition hover:opacity-90">Get started</a>
       <a href="https://github.com/sigulajs/sigula" class="rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-h)] transition hover:border-[var(--accent-border)]">GitHub</a>
     </div>
   </section>`,
