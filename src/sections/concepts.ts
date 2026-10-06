@@ -76,11 +76,12 @@ const teardown = code([
 ]);
 
 const queue = code([
-  'sig0.update(a);',
-  'sig1.update(b);',
-  'sig2.update(c);',
+  'sig0.update(a);   // ┐',
+  'sig1.update(b);   // ├── one microtask',
+  'sig2.update(c);   // ┘',
   '',
-  'sig.update(1); sig.update(2); sig.update(3);  // each dependent binding runs ONCE, against 3',
+  'sig.update(1); sig.update(2); sig.update(3);',
+  '// → each dependent binding runs ONCE, against 3',
 ]);
 
 const body = html`<div>
@@ -144,7 +145,12 @@ const body = html`<div>
   ${CodeBlock({code: teardown, lang: 'typescript'})}
 
   <h3 id="concepts-queue" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">The update queue</h3>
-  <p class="leading-relaxed text-[var(--text)]">Writes never run synchronously. Every write pushes the signal's binds onto one global queue and schedules a single <code>queueMicrotask</code>. Updates are batched across signals, coalesced per binding, and error-isolated (a throwing bind is logged and the rest of the queue still runs).</p>
+  <p class="leading-relaxed text-[var(--text)]">Writes never run synchronously. Every write pushes the signal's binds onto one global queue and schedules a single <code>queueMicrotask</code>.</p>
+  <ul class="mt-3 list-disc space-y-1 pl-5 text-sm leading-relaxed text-[var(--text)]">
+    <li><strong class="text-[var(--text-h)]">Batched across signals</strong> — many writes, one flush.</li>
+    <li><strong class="text-[var(--text-h)]">Coalesced per binding</strong> — each binding runs once and reads the newest value.</li>
+    <li><strong class="text-[var(--text-h)]">Error-isolated</strong> — a throwing binding is logged and the rest of the queue still runs.</li>
+  </ul>
   ${CodeBlock({code: queue, lang: 'typescript'})}
 
   <h3 id="concepts-not-included" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">What Sigula deliberately does not have</h3>
