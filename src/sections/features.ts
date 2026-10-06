@@ -41,7 +41,7 @@ export const features: SectionMeta = {
   id: 'features',
   title: 'Features',
   group: 'Introduction',
-  render: (): View => html`<section id="features" class="scroll-mt-24 pt-12">
+  render: (): View => html`<section id="features" class="scroll-mt-24 pt-20">
     <h2 class="text-3xl font-semibold tracking-tight text-[var(--text-h)]">Features</h2>
     <ul class="mt-6 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-[var(--text)]">
       ${list(items, (item) => html`<li><strong class="font-semibold text-[var(--text-h)]">${item.title}.</strong> ${rich(item.body)}</li>`)}

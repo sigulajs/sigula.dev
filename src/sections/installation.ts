@@ -39,7 +39,7 @@ export const installation: SectionMeta = {
   id: 'installation',
   title: 'Installation',
   group: 'Introduction',
-  render: (): View => html`<section id="installation" class="scroll-mt-24 pt-12">
+  render: (): View => html`<section id="installation" class="scroll-mt-24 pt-20">
     <h2 class="text-3xl font-semibold tracking-tight text-[var(--text-h)]">Installation</h2>
     ${InstallTabs()}
     <p class="leading-relaxed text-[var(--text)]">Sigula is ESM-only and ships type declarations. Importing the module is side-effect free; the DOM is only touched when you actually render.</p>

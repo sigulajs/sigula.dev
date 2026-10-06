@@ -84,7 +84,7 @@ const queue = code([
 ]);
 
 const body = html`<div>
-  <h3 id="concepts-architecture" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">The whole architecture in one picture</h3>
+  <h3 id="concepts-architecture" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">The whole architecture in one picture</h3>
   <div class="not-prose my-5 overflow-hidden rounded-xl border border-[var(--border)]">
     <div class="divide-y divide-[var(--border)]">
       ${row('Sig', 'holds a value + a list of Binds', 'state')}
@@ -97,27 +97,27 @@ const body = html`<div>
   </div>
   <p class="leading-relaxed text-[var(--text)]">Everything else in the library is a convenience layer over these five pieces: a signal holds a value and a list of bindings; a binding is <code>{sig, context, cmd}</code>; a command does the work; a view is a DOM region; and a patch is a set of deferred commands for one element.</p>
 
-  <h3 id="concepts-signals" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Signals: sig</h3>
+  <h3 id="concepts-signals" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Signals: sig</h3>
   <p class="leading-relaxed text-[var(--text)]">A <code>Sig&lt;T&gt;</code> is a value container that owns a list of bindings. It never touches the DOM itself.</p>
   ${CodeBlock({code: signals, lang: 'typescript'})}
   <p class="leading-relaxed text-[var(--text)]">Equality is deep by default: <code>update</code> compares with <code>eq</code>, delegating to <code>a.equals(b)</code> when the value implements <code>Equatable</code>. <code>sig(v, {eq})</code> accepts a custom comparator.</p>
   <p class="leading-relaxed text-[var(--text)]">In-place mutation needs <code>notify()</code>. Sigula does not proxy your objects, so mutating a held array or object is invisible to <code>update</code>:</p>
   ${CodeBlock({code: mutation, lang: 'typescript'})}
 
-  <h3 id="concepts-bindings" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Bindings: the unit of reactivity</h3>
+  <h3 id="concepts-bindings" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Bindings: the unit of reactivity</h3>
   <p class="leading-relaxed text-[var(--text)]">A binding is a three-field record — the entire reactive primitive. Fine-grained is literal: <code>text(name)</code> creates a bind whose <code>context</code> is one text node and whose <code>cmd</code> writes to it.</p>
   ${CodeBlock({code: bindings, lang: 'typescript'})}
 
-  <h3 id="concepts-derived" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Derived signals: compute</h3>
+  <h3 id="concepts-derived" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Derived signals: compute</h3>
   <p class="leading-relaxed text-[var(--text)]"><code>compute</code> returns a <code>DerivedSig&lt;T&gt;</code>, a <code>Sig</code> you cannot write to. Derived signals are lazy about upstream: they detach from their sources when they lose their last consumer and re-link once when a consumer returns.</p>
   ${CodeBlock({code: derived, lang: 'typescript'})}
 
-  <h3 id="concepts-templates" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Templates: html</h3>
+  <h3 id="concepts-templates" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Templates: html</h3>
   <p class="leading-relaxed text-[var(--text)]"><code>html</code> is a tagged template over native HTML strings. Content positions take a <code>View</code>, <code>text</code>, <code>raw</code>, a <code>Sig</code>, or any primitive; attribute positions take a <code>Patch</code> from <code>patch(...)</code>. Anything else in a content position is coerced with <code>text()</code>.</p>
   ${CodeBlock({code: templates, lang: 'typescript'})}
   <p class="leading-relaxed text-[var(--text)]">Templates are cached per call site, keyed by the mix of patch/view slots, so repeated renders skip parsing. One <code>Patch</code> per element: combine commands into a single <code>patch(...)</code> call.</p>
 
-  <h3 id="concepts-patch" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Patching an element: patch</h3>
+  <h3 id="concepts-patch" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Patching an element: patch</h3>
   <p class="leading-relaxed text-[var(--text)]"><code>patch</code> declares bindings for one element, as a props object, a list of command items, or both.</p>
   ${CodeBlock({code: patching, lang: 'typescript'})}
   ${ApiTable({
@@ -135,19 +135,19 @@ const body = html`<div>
     ],
   })}
 
-  <h3 id="concepts-control-flow" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Control flow</h3>
+  <h3 id="concepts-control-flow" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Control flow</h3>
   <p class="leading-relaxed text-[var(--text)]">Four helpers, all returning a <code>View</code>: <code>view(sig, viewFn)</code> swaps conditions; <code>repeat(sig, {key, view, eq?})</code> is a keyed list; <code>list(items, viewFn)</code> renders a static array once; <code>frag(...views)</code> composes siblings with no wrapper.</p>
   ${CodeBlock({code: controlflow, lang: 'typescript'})}
 
-  <h3 id="concepts-boundaries" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Boundaries and teardown</h3>
+  <h3 id="concepts-boundaries" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Boundaries and teardown</h3>
   <p class="leading-relaxed text-[var(--text)]">A <code>View</code> occupies a contiguous range of sibling nodes, described by <code>boundary(): {start, end}</code>. Teardown is explicit and recursive.</p>
   ${CodeBlock({code: teardown, lang: 'typescript'})}
 
-  <h3 id="concepts-queue" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">The update queue</h3>
+  <h3 id="concepts-queue" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">The update queue</h3>
   <p class="leading-relaxed text-[var(--text)]">Writes never run synchronously. Every write pushes the signal's binds onto one global queue and schedules a single <code>queueMicrotask</code>. Updates are batched across signals, coalesced per binding, and error-isolated (a throwing bind is logged and the rest of the queue still runs).</p>
   ${CodeBlock({code: queue, lang: 'typescript'})}
 
-  <h3 id="concepts-not-included" class="text-xl font-semibold text-[var(--text-h)] scroll-mt-24">What Sigula deliberately does not have</h3>
+  <h3 id="concepts-not-included" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">What Sigula deliberately does not have</h3>
   ${ApiTable({
     headers: ['Not included', 'Why'],
     rows: [
