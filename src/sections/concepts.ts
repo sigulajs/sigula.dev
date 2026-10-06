@@ -148,9 +148,10 @@ const body = html`<div>
   <p class="leading-relaxed text-[var(--text)]">Because a <code>Cmd</code> is just a function, the same model covers DOM writes, derived values, and arbitrary side effects — there is no separate <code>effect()</code>/<code>watch()</code> API to learn.</p>
 
   <h3 id="concepts-derived" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Derived signals: compute</h3>
-  <p class="leading-relaxed text-[var(--text)]"><code>compute</code> returns a <code>DerivedSig&lt;T&gt;</code>, a <code>Sig</code> you cannot write to. It has two overloads — one source signal, or a record of signals whose values arrive as a matching record. Derived signals compose: a <code>DerivedSig</code> is a valid source for another <code>compute</code> and a valid interpolation target.</p>
+  <p class="leading-relaxed text-[var(--text)]"><code>compute</code> returns a <code>DerivedSig&lt;T&gt;</code>, which is a <code>Sig</code> you cannot write to. Two overloads:</p>
   ${CodeBlock({code: derived, lang: 'typescript'})}
-  <p class="leading-relaxed text-[var(--text)]">Derived signals are lazy about upstream: they detach from their sources when they lose their last consumer (which happens whenever a <code>view()</code> subtree is hidden) and re-link and recompute once when a consumer returns — memory savings without manual disposal.</p>
+  <p class="leading-relaxed text-[var(--text)]">With the record form, <code>fn</code> receives the matching record of <em>values</em> (<code>ValRecord&lt;S&gt;</code>), fully typed. Derived signals compose: a <code>DerivedSig</code> is a valid source for another <code>compute</code>, and a valid interpolation target in a template.</p>
+  <p class="leading-relaxed text-[var(--text)]"><strong class="text-[var(--text-h)]">Derived signals are lazy about upstream.</strong> A <code>DerivedSig</code> detaches from its sources when it loses its last consumer (which happens whenever a <code>view()</code> subtree is hidden), and re-links and recomputes once when a consumer comes back. You get the memory savings without manual disposal.</p>
 
   <h3 id="concepts-templates" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Templates: html</h3>
   <p class="leading-relaxed text-[var(--text)]"><code>html</code> is a tagged template over native HTML strings — no compiler, no DSL, no JSX pragma. Interpolations fall into two positions, and the distinction is the one rule to memorize:</p>
