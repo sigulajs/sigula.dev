@@ -5,6 +5,7 @@ import json from 'highlight.js/lib/languages/json';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
 import {
+  act,
   compute,
   html,
   on,
@@ -67,6 +68,8 @@ export const CodeBlock = ({
   const collapsible = lineCount > MAX_LINES;
   const expanded = sig(false);
 
+  let root: Element | undefined;
+
   const prePatch = collapsible
     ? patch(toggleClass('code-collapsed', compute(expanded, (open) => !open)))
     : patch();
@@ -74,12 +77,25 @@ export const CodeBlock = ({
   const toggle = collapsible
     ? html`<button
         type="button"
-        ${patch(on('click', () => expanded.trans((open) => !open)))}
+        ${patch(
+          on('click', () => {
+            const willExpand = !expanded.get();
+            expanded.update(willExpand);
+            if (!willExpand) {
+              requestAnimationFrame(() =>
+                root?.scrollIntoView({block: 'start', behavior: 'smooth'}),
+              );
+            }
+          }),
+        )}
         class="flex w-full items-center justify-center gap-1 border-t border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text)] transition hover:bg-[var(--accent-bg)] hover:text-[var(--accent)]"
       >${view(expanded, (open) => text(open ? '▴ Show less' : `▾ Show more (${lineCount} lines)`))}</button>`
     : text('');
 
-  return html`<div class="my-5 overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--code-bg)]">
+  return html`<div
+    class="my-5 scroll-mt-20 overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--code-bg)]"
+    ${patch(act('', (el) => { root = el; }))}
+  >
     <div class="flex items-center justify-between gap-2 border-b border-[var(--border)] px-4 py-2">
       <span class="font-mono text-xs text-[var(--text)]">${title}</span>
       ${CopyButton(source, 'Copy')}
