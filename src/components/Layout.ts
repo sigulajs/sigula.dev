@@ -1,15 +1,15 @@
 import {
+  type AnyView,
   compute,
   html,
   on,
   patch,
   repeat,
+  type Sig,
   sig,
   text,
-  view,
-  type AnyView,
-  type Sig,
   type View,
+  view,
 } from 'sigula';
 import type {SectionMeta} from '../sections';
 import {theme, toggleTheme} from '../theme';
@@ -40,7 +40,9 @@ const ThemeToggle = (): View => {
   >${view(isDark, (dark) => (dark ? MoonIcon() : SunIcon()))}</button>`;
 };
 
-const Header = (mobileOpen: Sig<boolean>): View => html`<header class="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]">
+const Header = (
+  mobileOpen: Sig<boolean>,
+): View => html`<header class="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]">
   <div class="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-3 px-4 @3xl:px-6">
     <button
       type="button"
@@ -51,7 +53,7 @@ const Header = (mobileOpen: Sig<boolean>): View => html`<header class="sticky to
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
     <a href="#overview" class="flex items-center gap-2">
-      <img src="/favicon.svg" alt="" width="22" height="22" />
+      <img src="/favicon.svg" alt="" width="28" height="28" />
       <span class="font-semibold text-[var(--text-h)]">sigula</span>
     </a>
     ${Badge('v2.0.1')}
