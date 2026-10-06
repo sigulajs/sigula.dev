@@ -65,7 +65,7 @@ const controlflow = code([
   '',
   '${repeat(todos, {',
   '  key: (t) => t.id.toString(),',
-  '  view: (t) => html`<li>${text(t.text)}</li>`,',
+  '  view: (t) => html`<li>${t.text}</li>`,',
   '  eq: (a, b) => a.id === b.id && a.text === b.text,',
   '})}',
 ]);

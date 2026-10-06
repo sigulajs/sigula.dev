@@ -1,4 +1,4 @@
-import {html, list, repeat, sig, text} from 'sigula';
+import {html, list, repeat, sig} from 'sigula';
 
 const fruits = ['apple', 'banana', 'cherry'];      // static — rendered once
 const todos = sig([{id: 1, label: 'write docs'}]); // reactive — keyed
@@ -8,6 +8,6 @@ html`<div>
 
   <ul>${repeat(todos, {
     key: (t) => String(t.id),
-    view: (t) => html`<li>${text(t.label)}</li>`,
+    view: (t) => html`<li>${t.label}</li>`,
   })}</ul>
 </div>`;

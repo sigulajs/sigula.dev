@@ -19,7 +19,7 @@ export const Nav = (active: Sig<string>): View =>
     ${repeat(sig(navGroups), {
       key: (group) => group.name,
       view: (group) => html`<div class="mb-6">
-        <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-[var(--text)]">${text(group.name)}</p>
+        <p class="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-[var(--text)]">${group.name}</p>
         <ul>
           ${repeat(sig(group.items), {
             key: (item) => item.id,
@@ -30,10 +30,10 @@ export const Nav = (active: Sig<string>): View =>
                   toggleClass('active', compute(active, (id) => id === item.id)),
                 )}
                 class="nav-link"
-              >${text(item.title)}</a>
+              >${item.title}</a>
               ${view(compute(active, (id) => id === item.id), (isActive) =>
                 isActive
-                  ? list(item.subs ?? [], (sub) => html`<a ${patch(attr('href', `#${sub.id}`))} class="nav-sub">${text(sub.title)}</a>`)
+                  ? list(item.subs ?? [], (sub) => html`<a ${patch(attr('href', `#${sub.id}`))} class="nav-sub">${sub.title}</a>`)
                   : text(''),
               )}
             </li>`,

@@ -23,7 +23,7 @@ const step3 = [
   'const count = sig(0);',
   "const color = compute(count, (v) => (v >= 0 ? 'green' : 'red'));",
   '',
-  "html`<p ${patch(style('color', color))}>${text(count)}</p>`;",
+  "html`<p ${patch(style('color', color))}>${count}</p>`;",
 ].join('\n');
 
 const step4 = [
