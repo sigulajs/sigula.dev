@@ -16,7 +16,18 @@ const dispose = render(
   appNode,
 );
 
-setupScrollSpy(activeSection, activeHeading);
-restoreHash();
+// Reading layout (the scroll-spy's bounding rects, scrolling to a hash) before
+// the page is fully loaded forces an early reflow and can cause a flash of
+// unstyled content, so wait until load.
+const start = (): void => {
+  setupScrollSpy(activeSection, activeHeading);
+  restoreHash();
+};
+
+if (document.readyState === 'complete') {
+  start();
+} else {
+  window.addEventListener('load', start, {once: true});
+}
 
 window.addEventListener('beforeunload', dispose, {once: true});
