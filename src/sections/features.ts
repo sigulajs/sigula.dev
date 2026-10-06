@@ -42,11 +42,10 @@ export const features: SectionMeta = {
   group: 'Introduction',
   render: (): View => html`<section id="features" class="scroll-mt-24 pt-12">
     <h2 class="text-3xl font-semibold tracking-tight text-[var(--text-h)]">Features</h2>
-    <div class="mt-6 grid gap-4 @3xl:grid-cols-2">
-      ${list(items, (item) => html`<div class="rounded-xl border border-[var(--border)] bg-[var(--bg-soft)] p-4">
-        <h3 class="mb-1 font-semibold text-[var(--text-h)]">${item.title}</h3>
-        <p class="text-sm leading-relaxed text-[var(--text)]">${item.body}</p>
-      </div>`)}
-    </div>
+    <ul class="mt-6 divide-y divide-[var(--border)] overflow-hidden rounded-xl border border-[var(--border)]">
+      ${list(items, (item) => html`<li class="px-4 py-3 text-sm leading-relaxed text-[var(--text)]">
+        <strong class="font-semibold text-[var(--text-h)]">${item.title}.</strong> ${item.body}
+      </li>`)}
+    </ul>
   </section>`,
 };
