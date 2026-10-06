@@ -154,7 +154,8 @@ const body = html`<div>
   <p class="leading-relaxed text-[var(--text)]"><strong class="text-[var(--text-h)]">Derived signals are lazy about upstream.</strong> A <code>DerivedSig</code> detaches from its sources when it loses its last consumer (which happens whenever a <code>view()</code> subtree is hidden), and re-links and recomputes once when a consumer comes back. You get the memory savings without manual disposal.</p>
 
   <h3 id="concepts-templates" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Templates: html</h3>
-  <p class="leading-relaxed text-[var(--text)]"><code>html</code> is a tagged template over native HTML strings — no compiler, no DSL, no JSX pragma. Interpolations fall into two positions, and the distinction is the one rule to memorize:</p>
+  ${CodeBlock({code: 'const html = (strs: TemplateStringsArray, ...rawItems: HtmlItem[]): View;', lang: 'typescript'})}
+  <p class="leading-relaxed text-[var(--text)]"><code>html</code> is a tagged template over <strong class="text-[var(--text-h)]">native HTML strings</strong> — no compiler, no DSL, no JSX pragma. Interpolations fall into two positions, and the distinction is the one rule to memorize:</p>
   ${ApiTable({
     headers: ['Position', 'What goes there', 'Example'],
     rows: [
@@ -164,8 +165,21 @@ const body = html`<div>
   })}
   <p class="leading-relaxed text-[var(--text)]">Anything interpolated in a content position that is not already a <code>View</code> or <code>Patch</code> is coerced with <code>text()</code>, i.e. escaped and rendered as <code>String(value)</code>:</p>
   ${CodeBlock({code: coercion, lang: 'typescript'})}
-  <p class="leading-relaxed text-[var(--text)]"><strong class="text-[var(--text-h)]">How parsing works (and why it is fast).</strong> Every call site gets a random marker <code>@sig_&lt;rand&gt;</code>. Interpolations are written into the template string as an attribute marker for a <code>Patch</code> and a comment marker for a <code>View</code>, so parsing needs no regular expressions: Sigula walks the parsed fragment with a single <code>TreeWalker</code> and commits each marker in order.</p>
-  <p class="leading-relaxed text-[var(--text)]">Two consequences worth knowing: <strong class="text-[var(--text-h)]">one <code>Patch</code> per element</strong> (combine commands into a single <code>patch(...)</code> call), and <strong class="text-[var(--text-h)]">templates are cached per call site</strong> (a <code>WeakMap</code> on the <code>TemplateStringsArray</code>, keyed by the mix of patch/view slots), so repeated renders skip parsing entirely.</p>
+  <p class="leading-relaxed text-[var(--text)]"><code>raw(source)</code> parses its value through a detached <code>&lt;template&gt;</code> and mounts the resulting nodes with no wrapper element. <strong class="text-[var(--text-h)]">It does not escape</strong> — only ever pass trusted HTML.</p>
+  <h4 class="mt-8 text-lg font-semibold text-[var(--text-h)]">How parsing works (and why it is fast)</h4>
+  <p class="leading-relaxed text-[var(--text)]">Every call site gets a random marker, <code>@sig_&lt;rand&gt;</code>. Interpolations are rendered into the template string as:</p>
+  <ul class="mt-3 list-disc space-y-1 pl-5 text-sm leading-relaxed text-[var(--text)]">
+    <li>an <strong class="text-[var(--text-h)]">attribute marker</strong> <code>@sig_x</code> for a <code>Patch</code>,</li>
+    <li>a <strong class="text-[var(--text-h)]">comment marker</strong> <code>&lt;!--@sig_x--&gt;</code> for a <code>View</code>.</li>
+  </ul>
+  ${CodeBlock({code: 'html`<div @sig_2734618> <!--@sig_2734618--> <!--@sig_2734618--> </div>`;', lang: 'html'})}
+  <p class="leading-relaxed text-[var(--text)]">Therefore parsing needs no regular expressions: Sigula walks the parsed fragment with a single <code>TreeWalker</code>, collects each marker node in order, and commits the matching item (<code>commitPatch</code> for elements, <code>commitView</code> for comments). The uniform format is also what makes the API extensible — <code>id</code>, <code>on</code>, <code>attr</code>, <code>style</code> are all just patch items, and you can write your own.</p>
+  <p class="leading-relaxed text-[var(--text)]">Two consequences worth knowing:</p>
+  <ol class="mt-3 list-decimal space-y-1 pl-5 text-sm leading-relaxed text-[var(--text)]">
+    <li><strong class="text-[var(--text-h)]">One <code>Patch</code> per element.</strong> The marker is an attribute, so a second <code>patch()</code> on the same element cannot be located. Combine everything into a single <code>patch(...)</code> call — that is what its variadic form is for.</li>
+    <li><strong class="text-[var(--text-h)]">Templates are cached per call site</strong> (a <code>WeakMap</code> on the <code>TemplateStringsArray</code>), and the cache key includes the <em>mix</em> of patch/view slots (a bitmask for up to 31 slots, a string beyond that). Repeated renders skip parsing entirely; a call site that changes its interpolation mix simply gets a fresh template.</li>
+  </ol>
+  <p class="leading-relaxed text-[var(--text)]">The returned <code>View</code> is <code>{node, children, boundary(), cleanBinds()}</code> — see <a href="#concepts-boundaries" class="text-[var(--accent)] hover:underline">Boundaries</a>.</p>
 
   <h3 id="concepts-patch" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Patching an element: patch</h3>
   <p class="leading-relaxed text-[var(--text)]"><code>patch</code> declares bindings for one element, as a props object, a list of command items, or both. The props object handles <code>id</code>, <code>val</code>, <code>class</code>, <code>style</code>, <code>styleProp</code>, and <code>on</code>; any other key becomes an attribute, and a key whose value is <code>undefined</code> is skipped.</p>
