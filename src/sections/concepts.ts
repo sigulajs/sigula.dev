@@ -87,12 +87,14 @@ const patchValues = code([
 ]);
 
 const controlflow = code([
+  '// conditional',
   "${view(isEmpty, (empty) => (empty ? text('empty') : listView))}",
   '',
+  '// keyed list',
   '${repeat(todos, {',
   '  key: (t) => t.id.toString(),',
-  '  view: (t) => html`<li>${t.text}</li>`,',
-  '  eq: (a, b) => a.id === b.id && a.text === b.text,',
+  '  view: (t) => html`<li>${text(t.text)}</li>`,',
+  '  eq: (a, b) => a.id === b.id && a.text === b.text, // optional, defaults to eq',
   '})}',
 ]);
 
@@ -206,7 +208,7 @@ const body = html`<div>
   <p class="leading-relaxed text-[var(--text)]">Note that <code>on</code> registers the listener <strong class="text-[var(--text-h)]">once at mount</strong>; the listener itself is not a reactive source. Drive updates by writing to a signal inside it.</p>
 
   <h3 id="concepts-control-flow" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Control flow</h3>
-  <p class="leading-relaxed text-[var(--text)]">Four helpers, all returning a <code>View</code>:</p>
+  <p class="leading-relaxed text-[var(--text)]">Sigula has exactly four control-flow helpers, all returning a <code>View</code>:</p>
   ${ApiTable({
     headers: ['Helper', 'Use it for'],
     rows: [
@@ -217,6 +219,7 @@ const body = html`<div>
     ],
   })}
   ${CodeBlock({code: controlflow, lang: 'typescript'})}
+  <p class="leading-relaxed text-[var(--text)]"><code>repeat</code> matches items by <code>key</code> with a two-pointer walk, reusing, moving, creating, or removing as few nodes as possible, and uses <code>moveBefore</code> when available to preserve element state across moves. When nothing changed — same keys, same order, equal items — it bails out before touching the DOM at all. Use <code>list</code> instead when the array never changes shape.</p>
 
   <h3 id="concepts-boundaries" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Boundaries and teardown</h3>
   <p class="leading-relaxed text-[var(--text)]">A <code>View</code> occupies a contiguous range of sibling nodes, described by <code>boundary(): {start, end}</code> — this is how Sigula swaps or removes multi-node regions without a wrapper element or a virtual tree. The returned view is <code>{node, children, boundary(), cleanBinds()}</code>.</p>
