@@ -4,7 +4,7 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import json from 'highlight.js/lib/languages/json';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
-import {act, html, patch, text, type View} from 'sigula';
+import {html, raw, text, type View} from 'sigula';
 import {CopyButton} from './CopyButton';
 
 let langsReady = false;
@@ -54,6 +54,6 @@ export const CodeBlock = ({
       <span class="font-mono text-xs text-[var(--text)]">${text(title)}</span>
       ${CopyButton(source, 'Copy')}
     </div>
-    <pre class="overflow-x-auto p-4 text-[13px] leading-relaxed"><code class="hljs" ${patch(act(highlighted, (el, value) => { el.innerHTML = String(value); }))}></code></pre>
+    <pre class="overflow-x-auto p-4 text-[13px] leading-relaxed"><code class="hljs">${raw(highlighted)}</code></pre>
   </div>`;
 };
