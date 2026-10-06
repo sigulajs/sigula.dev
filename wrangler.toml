@@ -1,13 +1,9 @@
+name = "sigula-dev"
+compatibility_date = "2026-10-01"
+
 [assets]
 directory = "./dist"
 
 [vars]
-NODE_VERSION = "24.21.0"
-PNPM_VERSION = "12.9.1"
-
-[previews.assets]
-directory = "./dist"
-
-[previews.vars]
 NODE_VERSION = "24.21.0"
 PNPM_VERSION = "12.9.1"
