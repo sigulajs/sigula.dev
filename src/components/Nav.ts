@@ -8,6 +8,7 @@ import {
   sig,
   text,
   toggleClass,
+  view,
   type Sig,
   type View,
 } from 'sigula';
@@ -30,7 +31,11 @@ export const Nav = (active: Sig<string>): View =>
                 )}
                 class="nav-link"
               >${text(item.title)}</a>
-              ${list(item.subs ?? [], (sub) => html`<a ${patch(attr('href', `#${sub.id}`))} class="nav-sub">${text(sub.title)}</a>`)}
+              ${view(compute(active, (id) => id === item.id), (isActive) =>
+                isActive
+                  ? list(item.subs ?? [], (sub) => html`<a ${patch(attr('href', `#${sub.id}`))} class="nav-sub">${text(sub.title)}</a>`)
+                  : text(''),
+              )}
             </li>`,
           })}
         </ul>
