@@ -21,7 +21,13 @@ interface Todo {
 export const Todos = (): View => {
   // --- State ---
   const input = sig(''); // what the user is typing
-  const todos = sig<Todo[]>([]); // the list; each todo's `done` is its own signal
+  const todos = sig<Todo[]>([
+    // seeded with a mix of active and done items
+    {id: 1, text: 'Learn signals', done: sig(true)},
+    {id: 2, text: 'Try the Equation demo', done: sig(false)},
+    {id: 3, text: 'Read Core Concepts', done: sig(true)},
+    {id: 4, text: 'Build something', done: sig(false)},
+  ]);
   const filter = sig<'all' | 'active' | 'done'>('all');
 
   // --- Derived state ---
