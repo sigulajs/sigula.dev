@@ -4,7 +4,18 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import json from 'highlight.js/lib/languages/json';
 import typescript from 'highlight.js/lib/languages/typescript';
 import xml from 'highlight.js/lib/languages/xml';
-import {html, raw, type View} from 'sigula';
+import {
+  compute,
+  html,
+  on,
+  patch,
+  raw,
+  sig,
+  text,
+  toggleClass,
+  view,
+  type View,
+} from 'sigula';
 import {CopyButton} from './CopyButton';
 
 let langsReady = false;
@@ -35,6 +46,8 @@ const highlight = (code: string, lang: string): string => {
   return escapeHtml(code);
 };
 
+const MAX_LINES = 24;
+
 export interface CodeBlockProps {
   code: string;
   lang?: string;
@@ -49,11 +62,29 @@ export const CodeBlock = ({
   const source = code.trim();
   const highlighted = highlight(source, lang);
   const title = filename ?? lang;
+
+  const lineCount = source.split('\n').length;
+  const collapsible = lineCount > MAX_LINES;
+  const expanded = sig(false);
+
+  const prePatch = collapsible
+    ? patch(toggleClass('code-collapsed', compute(expanded, (open) => !open)))
+    : patch();
+
+  const toggle = collapsible
+    ? html`<button
+        type="button"
+        ${patch(on('click', () => expanded.trans((open) => !open)))}
+        class="flex w-full items-center justify-center gap-1 border-t border-[var(--border)] px-4 py-2 text-xs font-medium text-[var(--text)] transition hover:bg-[var(--accent-bg)] hover:text-[var(--accent)]"
+      >${view(expanded, (open) => text(open ? '▴ Show less' : `▾ Show more (${lineCount} lines)`))}</button>`
+    : text('');
+
   return html`<div class="my-5 overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--code-bg)]">
     <div class="flex items-center justify-between gap-2 border-b border-[var(--border)] px-4 py-2">
       <span class="font-mono text-xs text-[var(--text)]">${title}</span>
       ${CopyButton(source, 'Copy')}
     </div>
-    <pre class="overflow-x-auto p-4 text-[13px] leading-relaxed"><code class="hljs">${raw(highlighted)}</code></pre>
+    <pre class="overflow-x-auto p-4 text-[13px] leading-relaxed" ${prePatch}><code class="hljs">${raw(highlighted)}</code></pre>
+    ${toggle}
   </div>`;
 };
