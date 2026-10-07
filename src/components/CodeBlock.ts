@@ -1,10 +1,10 @@
 import {
-  act,
   compute,
   html,
   on,
   patch,
   raw,
+  ref,
   sig,
   text,
   toggleClass,
@@ -33,7 +33,7 @@ export const CodeBlock = ({
   const collapsible = lineCount > MAX_LINES;
   const expanded = sig(false);
 
-  let root: Element | undefined;
+  const root = sig<HTMLElement | null>(null);
 
   const wrapPatch = collapsible
     ? patch(toggleClass('code-collapsed', compute(expanded, (open) => !open)))
@@ -48,7 +48,7 @@ export const CodeBlock = ({
             expanded.update(willExpand);
             if (!willExpand) {
               requestAnimationFrame(() =>
-                root?.scrollIntoView({block: 'start', behavior: 'smooth'}),
+                root.get()?.scrollIntoView({block: 'start', behavior: 'smooth'}),
               );
             }
           }),
@@ -59,7 +59,7 @@ export const CodeBlock = ({
 
   return html`<div
     class="my-5 scroll-mt-20 overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--code-bg)]"
-    ${patch(act('', (el) => { root = el; }))}
+    ${patch(ref(root))}
   >
     <div class="flex items-center justify-between gap-2 border-b border-[var(--border)] px-4 py-2">
       <span class="font-mono text-xs text-[var(--text)]">${filename ?? ''}</span>
