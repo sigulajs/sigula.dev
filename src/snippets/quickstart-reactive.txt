@@ -1,0 +1,5 @@
+const name = sig('Alice');
+
+render(html`<h1>Hello, ${name}!</h1>`, app);
+
+name.update('Bob'); // only the text node changes

@@ -1,0 +1,5 @@
+import {html, render} from 'sigula';
+
+const app = document.querySelector('#app')!;
+
+render(html`<h1>Hello, world!</h1>`, app);

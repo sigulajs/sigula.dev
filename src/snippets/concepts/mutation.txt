@@ -1,0 +1,3 @@
+const items = sig<string[]>([]);
+items.get().push('a');   // value object mutated, no write detected
+items.notify();          // ← tell dependents to re-run

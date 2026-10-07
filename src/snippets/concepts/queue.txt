@@ -1,0 +1,6 @@
+sig0.update(a);   // ┐
+sig1.update(b);   // ├── one microtask
+sig2.update(c);   // ┘
+
+sig.update(1); sig.update(2); sig.update(3);
+// → each dependent binding runs ONCE, against 3

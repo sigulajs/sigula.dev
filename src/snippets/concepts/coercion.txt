@@ -1,0 +1,13 @@
+const sigItem  = sig('signal item');
+const strItem  = 'string data';
+const numItem  = 2026;
+const htmlItem = html`<span>Html Span Element</span>`;
+
+render(
+  html`<p>${sigItem} / ${strItem} / ${numItem}</p>
+       <div>${htmlItem}</div>
+       <div>${raw('<strong>Trusted</strong> HTML')}</div>`,
+  app,
+);
+
+sigItem.update('string with <strong>markup</strong>'); // stays escaped — renders as text

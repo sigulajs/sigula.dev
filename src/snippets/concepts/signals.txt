@@ -1,0 +1,8 @@
+const count = sig(0);
+
+count.get();              // 0 — read the current value
+count.update(1);          // set; dependents notified only if not deeply equal
+count.update(1);          // no-op: deeply equal, nothing is scheduled
+count.forceUpdate(1);     // set and always notify (even when equal)
+count.trans((v) => v + 1);// apply a function to the current value
+count.notify();           // re-run dependents without changing the value

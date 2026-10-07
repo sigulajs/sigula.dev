@@ -1,0 +1,8 @@
+import {compute, html, sig, text, view} from 'sigula';
+
+const count = sig(0);
+const isEmpty = compute(count, (v) => v === 0);
+
+html`<div>${view(isEmpty, (empty) =>
+  empty ? text('nothing yet') : html`<p>count: ${count}</p>`,
+)}</div>`;

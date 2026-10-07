@@ -1,0 +1,5 @@
+// Props form — desugared into commands
+html`<input ${patch({id: 'name', val: name, placeholder: 'Your name'})} />`
+
+// Command form
+html`<input ${patch(val(name), attr('placeholder', placeholder))} />`

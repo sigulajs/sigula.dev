@@ -1,5 +1,6 @@
 import UnoCSS from 'unocss/vite';
 import {defineConfig, type Plugin} from 'vite';
+import {shikiRaw} from './vite-plugin-shiki.ts';
 
 // Vite injects the entry stylesheet after the module script. Because the script
 // is deferred, it can run and force layout before the stylesheet has applied,
@@ -22,7 +23,7 @@ const cssBeforeScript = (): Plugin => ({
 });
 
 export default defineConfig({
-  plugins: [UnoCSS(), cssBeforeScript()],
+  plugins: [shikiRaw(), UnoCSS(), cssBeforeScript()],
   resolve: {
     preserveSymlinks: true,
   },

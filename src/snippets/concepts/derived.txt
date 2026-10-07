@@ -1,0 +1,4 @@
+const x = sig(1);
+const doubled = compute(x, (v) => v * 2);          // from one signal
+
+const sum = compute({x, y}, (v) => v.x + v.y);     // from a record of signals

@@ -1,0 +1,5 @@
+const disabled = sig(false);
+const label = 'Submit';
+
+html`<button ${patch(attr('disabled', disabled), attr('aria-label', label))}>Go</button>`
+//                     ↑ reactive                     ↑ static

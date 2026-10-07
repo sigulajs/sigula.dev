@@ -1,0 +1,9 @@
+// conditional
+${view(isEmpty, (empty) => (empty ? text('empty') : listView))}
+
+// keyed list
+${repeat(todos, {
+  key: (t) => t.id.toString(),
+  view: (t) => html`<li>${text(t.text)}</li>`,
+  eq: (a, b) => a.id === b.id && a.text === b.text, // optional, defaults to eq
+})}

@@ -1,0 +1,4 @@
+const count = sig(0);
+const color = compute(count, (v) => (v >= 0 ? 'green' : 'red'));
+
+html`<p ${patch(style('color', color))}>${count}</p>`;

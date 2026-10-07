@@ -1,9 +1,3 @@
-import hljs from 'highlight.js/lib/core';
-import bash from 'highlight.js/lib/languages/bash';
-import javascript from 'highlight.js/lib/languages/javascript';
-import json from 'highlight.js/lib/languages/json';
-import typescript from 'highlight.js/lib/languages/typescript';
-import xml from 'highlight.js/lib/languages/xml';
 import {
   act,
   compute,
@@ -14,69 +8,35 @@ import {
   sig,
   text,
   toggleClass,
-  type View,
   view,
+  type View,
 } from 'sigula';
 import {CopyButton} from './CopyButton';
-
-let langsReady = false;
-
-const ensureLangs = (): void => {
-  if (langsReady) return;
-  hljs.registerLanguage('typescript', typescript);
-  hljs.registerLanguage('javascript', javascript);
-  hljs.registerLanguage('xml', xml);
-  hljs.registerLanguage('html', xml);
-  hljs.registerLanguage('bash', bash);
-  hljs.registerLanguage('json', json);
-  langsReady = true;
-};
-
-const escapeHtml = (value: string): string =>
-  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-const highlight = (code: string, lang: string): string => {
-  ensureLangs();
-  try {
-    if (hljs.getLanguage(lang)) {
-      return hljs.highlight(code, {language: lang, ignoreIllegals: true}).value;
-    }
-  } catch {
-    // fall back to escaped source
-  }
-  return escapeHtml(code);
-};
 
 const MAX_LINES = 24;
 
 export interface CodeBlockProps {
-  code: string;
-  lang?: string;
+  /** Pre-highlighted HTML, e.g. from an `?raw&shiki=<lang>` import. */
+  html: string;
+  /** The raw source, used for the copy button and line count. */
+  source: string;
   filename?: string;
 }
 
 export const CodeBlock = ({
-  code,
-  lang = 'typescript',
+  html: markup,
+  source,
   filename,
 }: CodeBlockProps): View => {
-  const source = code.trim();
-  const highlighted = highlight(source, lang);
-  const title = filename ?? lang;
-
-  const lineCount = source.split('\n').length;
+  const trimmed = source.trim();
+  const lineCount = trimmed.split('\n').length;
   const collapsible = lineCount > MAX_LINES;
   const expanded = sig(false);
 
   let root: Element | undefined;
 
-  const prePatch = collapsible
-    ? patch(
-        toggleClass(
-          'code-collapsed',
-          compute(expanded, (open) => !open),
-        ),
-      )
+  const wrapPatch = collapsible
+    ? patch(toggleClass('code-collapsed', compute(expanded, (open) => !open)))
     : patch();
 
   const toggle = collapsible
@@ -99,17 +59,13 @@ export const CodeBlock = ({
 
   return html`<div
     class="my-5 scroll-mt-20 overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--code-bg)]"
-    ${patch(
-      act('', (el) => {
-        root = el;
-      }),
-    )}
+    ${patch(act('', (el) => { root = el; }))}
   >
     <div class="flex items-center justify-between gap-2 border-b border-[var(--border)] px-4 py-2">
-      <span class="font-mono text-xs text-[var(--text)]">${title}</span>
-      ${CopyButton(source, 'Copy')}
+      <span class="font-mono text-xs text-[var(--text)]">${filename ?? ''}</span>
+      ${CopyButton(trimmed, 'Copy')}
     </div>
-    <pre class="whitespace-pre-wrap break-words p-4 text-[13px] leading-relaxed" ${prePatch}><code class="hljs">${raw(highlighted)}</code></pre>
+    <div class="code-scroll" ${wrapPatch}>${raw(markup)}</div>
     ${toggle}
   </div>`;
 };

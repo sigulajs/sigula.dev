@@ -1,0 +1,4 @@
+const name = sig('Alice');
+const v = text(name);   // Bind{ sig: name, context: {node: <Text>}, cmd: textCmd }
+
+name.update('Bob');     // → textCmd('Bob', {node}) → that one node changes

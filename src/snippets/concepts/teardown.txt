@@ -1,0 +1,2 @@
+const dispose = render(App(), app);
+dispose();   // removeBoundary(view.boundary()) + view.cleanBinds()

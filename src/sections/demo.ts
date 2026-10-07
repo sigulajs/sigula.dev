@@ -2,14 +2,18 @@ import {html} from 'sigula';
 import {CodeBlock} from '../components/CodeBlock';
 import {Equation} from '../components/demos/Equation';
 import {Todos} from '../components/demos/Todos';
-import equationSource from '../components/demos/Equation.ts?raw';
-import todosSource from '../components/demos/Todos.ts?raw';
+import equationHtml, {
+  source as equationSource,
+} from '../components/demos/Equation.ts?raw&shiki=typescript';
+import todosHtml, {
+  source as todosSource,
+} from '../components/demos/Todos.ts?raw&shiki=typescript';
 import {headingSection} from './api';
 import type {SectionMeta} from './types';
 
 const body = html`<div>
   <h3 id="demo-equation" class="mt-8 text-2xl font-semibold text-[var(--text-h)] scroll-mt-24">Equation</h3>
-  ${CodeBlock({code: equationSource, lang: 'typescript', filename: 'Equation.ts'})}
+  ${CodeBlock({html: equationHtml, source: equationSource, filename: 'Equation.ts'})}
   <div class="mt-5 grid items-start gap-6 @4xl:grid-cols-2">
     <div>
       <p class="text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">How it works</p>
@@ -27,7 +31,7 @@ const body = html`<div>
   </div>
 
   <h3 id="demo-todos" class="mt-12 text-2xl font-semibold text-[var(--text-h)] scroll-mt-24">Todos</h3>
-  ${CodeBlock({code: todosSource, lang: 'typescript', filename: 'Todos.ts'})}
+  ${CodeBlock({html: todosHtml, source: todosSource, filename: 'Todos.ts'})}
   <div class="mt-5 grid items-start gap-6 @4xl:grid-cols-2">
     <div>
       <p class="text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">How it works</p>

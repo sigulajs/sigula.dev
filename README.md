@@ -13,7 +13,8 @@ docs, and the live demos all run on the framework it documents.
 - **Vite** — dev server and production bundler.
 - **TypeScript** — strict mode.
 - **UnoCSS** (`presetWind4`) — utility styling, with container queries and class-based dark mode.
-- **highlight.js** — syntax highlighting for the code blocks.
+- **Shiki** — syntax highlighting, precompiled to HTML at build time via a custom Vite plugin
+  (`?raw&shiki=<lang>`), with dual `github-light`/`github-dark` themes.
 
 ## Getting started
 
@@ -37,7 +38,7 @@ src/
   style.css           CSS variables, prose + inline-code styles, hljs theme
   components/         reusable views: Layout, Nav, CodeBlock, ApiTable, Badge, demos, …
   sections/           one module per docs section + the registry that drives nav + content
-  snippets/           raw code samples shown in code blocks (imported with ?raw)
+  snippets/           raw code samples shown in code blocks (imported with ?raw&shiki=<lang>)
 public/               favicon and static assets
 docs/                 design specs, plans, and reports
 ```

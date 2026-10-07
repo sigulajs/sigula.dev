@@ -1,0 +1,7 @@
+const Counter = (initial: number): View => {
+  const count = sig(initial);
+  return html`<div>
+    <span>${count}</span>
+    <button ${patch(on('click', () => count.trans((v) => v + 1)))}>+1</button>
+  </div>`;
+};

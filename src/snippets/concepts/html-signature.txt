@@ -1,0 +1,1 @@
+const html = (strs: TemplateStringsArray, ...rawItems: HtmlItem[]): View;

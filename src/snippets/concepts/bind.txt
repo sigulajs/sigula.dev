@@ -1,0 +1,7 @@
+interface Bind<T, C> {
+  sig: Sig<T>;                    // what it observes
+  context: C;                     // where the result goes (a text node, an element, …)
+  cmd: (val: T, ctx: C) => void;  // what to do with the new value
+  removed: boolean;
+  queued?: boolean;
+}
