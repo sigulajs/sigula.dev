@@ -13,6 +13,7 @@ const body = html`<div>
     rows: [
       ['`sig(v, opts?)`', 'state', '`Sig<T>`'],
       ['`compute(sig, fn)` / `compute(record, fn)`', 'derived', '`DerivedSig<T>`'],
+      ['`effect(sig, fn)` / `effect(record, fn)`', 'reactivity', 'disposer `() => void`'],
       ['`html`', 'template', '`View`'],
       ['`text(source)`', 'template', '`View` (escaped text node)'],
       ['`raw(source)`', 'template', '`View` (unescaped HTML)'],

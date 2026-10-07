@@ -1,4 +1,4 @@
-import {sig} from 'sigula';
+import {effect, sig} from 'sigula';
 
 export type Theme = 'light' | 'dark';
 
@@ -32,9 +32,11 @@ const persist = (value: Theme): void => {
   }
 };
 
+// Apply the theme immediately and whenever it changes.
+effect(theme, apply);
+
 export const setTheme = (value: Theme): void => {
   theme.update(value);
-  apply(value);
   persist(value);
 };
 
@@ -42,14 +44,10 @@ export const toggleTheme = (): void => {
   setTheme(theme.get() === 'dark' ? 'light' : 'dark');
 };
 
-apply(theme.get());
-
 try {
   darkQuery.addEventListener('change', (event) => {
     if (readStored()) return;
-    const next: Theme = event.matches ? 'dark' : 'light';
-    theme.update(next);
-    apply(next);
+    theme.update(event.matches ? 'dark' : 'light');
   });
 } catch {
   // matchMedia unavailable; ignore

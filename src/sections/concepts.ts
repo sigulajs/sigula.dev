@@ -149,7 +149,7 @@ const body = html`<div>
   ${CodeBlock({code: bindInterface, lang: 'typescript'})}
   <p class="leading-relaxed text-[var(--text)]">So "fine-grained" is literal: <code>text(name)</code> creates a bind whose <code>context</code> is one <code>Text</code> node and whose <code>cmd</code> is <code>node.textContent = String(val)</code>. Nothing else in the tree is involved.</p>
   ${CodeBlock({code: bindings, lang: 'typescript'})}
-  <p class="leading-relaxed text-[var(--text)]">Because a <code>Cmd</code> is just a function, the same model covers DOM writes, derived values, and arbitrary side effects — there is no separate <code>effect()</code>/<code>watch()</code> API to learn.</p>
+  <p class="leading-relaxed text-[var(--text)]">Because a <code>Cmd</code> is just a function, the same model covers DOM writes, derived values, and arbitrary side effects: <code>compute(source, fn)</code> is a bind that writes to another signal, and <code>effect(source, fn)</code> is a bind that runs <code>fn</code> with the new value — immediately and on every change — and returns a disposer.</p>
 
   <h3 id="concepts-derived" class="mt-12 text-xl font-semibold text-[var(--text-h)] scroll-mt-24">Derived signals: compute</h3>
   <p class="leading-relaxed text-[var(--text)]"><code>compute</code> returns a <code>DerivedSig&lt;T&gt;</code>, which is a <code>Sig</code> you cannot write to. Two overloads:</p>
