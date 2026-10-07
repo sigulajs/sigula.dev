@@ -12,8 +12,8 @@ importers:
         specifier: ^11.12.0
         version: 11.12.0
       sigula:
-        specifier: 2.0.1
-        version: 2.0.1
+        specifier: 2.1.0
+        version: 2.1.0
     devDependencies:
       '@biomejs/biome':
         specifier: 2.5.14
@@ -801,8 +801,8 @@ packages:
     resolution: {integrity: sha512-ySeaQkSrua+ut9g+65I7FHqOFBaY8tV0FmccXItoq0q21se32Q3u4YiW7/RqXSosWgYJaaKwRHXy3BST9PeCNQ==}
     engines: {node: '>=20.19.0'}
 
-  sigula@2.0.1:
-    resolution: {integrity: sha512-XAUoaNCS1TN4/UtWdfEddryKoFRUAQRtaq+ASBg7gBToLkgHWp50MM692fDel+3W3kVLALykaIvW2oVjA3ASNQ==}
+  sigula@2.1.0:
+    resolution: {integrity: sha512-yD7DuLh/39DtNXvy9Xa1kgrCU8nljhvFC++Anp70CNtRJVowQJm9LyxUdf1CidN+hUuqsEXD3/f4imKHJmDL7w==}
     engines: {node: ^24.21.0, pnpm: ^12.8.1}
 
   source-map-js@1.2.2:
@@ -1543,7 +1543,7 @@ snapshots:
 
   rou3@1.0.0: {}
 
-  sigula@2.0.1: {}
+  sigula@2.1.0: {}
 
   source-map-js@1.2.2: {}
 

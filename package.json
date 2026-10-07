@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "highlight.js": "^11.12.0",
-    "sigula": "2.0.1"
+    "sigula": "2.1.0"
   }
 }

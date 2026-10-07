@@ -14,8 +14,8 @@ import {
   sig,
   text,
   toggleClass,
-  view,
   type View,
+  view,
 } from 'sigula';
 import {CopyButton} from './CopyButton';
 
@@ -71,7 +71,12 @@ export const CodeBlock = ({
   let root: Element | undefined;
 
   const prePatch = collapsible
-    ? patch(toggleClass('code-collapsed', compute(expanded, (open) => !open)))
+    ? patch(
+        toggleClass(
+          'code-collapsed',
+          compute(expanded, (open) => !open),
+        ),
+      )
     : patch();
 
   const toggle = collapsible
@@ -94,7 +99,11 @@ export const CodeBlock = ({
 
   return html`<div
     class="my-5 scroll-mt-20 overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--code-bg)]"
-    ${patch(act('', (el) => { root = el; }))}
+    ${patch(
+      act('', (el) => {
+        root = el;
+      }),
+    )}
   >
     <div class="flex items-center justify-between gap-2 border-b border-[var(--border)] px-4 py-2">
       <span class="font-mono text-xs text-[var(--text)]">${title}</span>
