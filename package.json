@@ -24,7 +24,9 @@
   "type": "module",
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
+    "@happy-dom/server-renderer": "20.14.5",
     "@types/node": "26.6.3",
+    "happy-dom": "20.14.5",
     "shiki": "^4.5.0",
     "typescript": "7.0.2",
     "unocss": "66.10.5",
