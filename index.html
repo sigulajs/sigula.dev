@@ -9,10 +9,20 @@
       content="Sigula — a tiny web framework with fine-grained signal reactivity and no virtual DOM."
     >
     <title>Sigula — tiny web framework with fine-grained reactivity</title>
+    <script>
+      // Apply the stored/system theme before first paint to avoid a flash.
+      try {
+        const stored = localStorage.getItem('sigula-theme');
+        const dark =
+          stored === 'dark' ||
+          (!stored && matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', dark);
+        document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+      } catch {}
+    </script>
   </head>
   <body>
     <div id="app"><!--prerender--></div>
-    <!--<script type="module" src="/src/main.ts"></script>-->
     <script type="module" src="/src/client.ts"></script>
   </body>
 </html>

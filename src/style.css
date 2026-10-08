@@ -244,3 +244,39 @@ main ul {
   background: var(--border);
   border-radius: 4px;
 }
+
+/* Progressive-enhancement hooks (see src/enhance.ts) */
+
+[data-nav-drawer] {
+  display: none;
+}
+
+[data-nav-drawer].open {
+  display: block;
+}
+
+@media (min-width: 48rem) {
+  [data-nav-drawer].open {
+    display: none;
+  }
+}
+
+.nav-subs {
+  display: none;
+}
+
+.nav-link.active + .nav-subs {
+  display: block;
+}
+
+[data-when-expanded] {
+  display: none;
+}
+
+[data-code-block].code-open [data-when-collapsed] {
+  display: none;
+}
+
+[data-code-block].code-open [data-when-expanded] {
+  display: inline;
+}

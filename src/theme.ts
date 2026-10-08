@@ -1,5 +1,3 @@
-import {effect, sig} from 'sigula';
-
 export type Theme = 'light' | 'dark';
 
 const STORAGE_KEY = 'sigula-theme';
@@ -17,13 +15,6 @@ const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
 const systemTheme = (): Theme => (darkQuery.matches ? 'dark' : 'light');
 
-export const theme = sig<Theme>(readStored() ?? systemTheme());
-
-const apply = (value: Theme): void => {
-  document.documentElement.classList.toggle('dark', value === 'dark');
-  document.documentElement.style.colorScheme = value;
-};
-
 const persist = (value: Theme): void => {
   try {
     localStorage.setItem(STORAGE_KEY, value);
@@ -32,22 +23,31 @@ const persist = (value: Theme): void => {
   }
 };
 
-// Apply the theme immediately and whenever it changes.
-effect(theme, apply);
+const apply = (value: Theme): void => {
+  document.documentElement.classList.toggle('dark', value === 'dark');
+  document.documentElement.style.colorScheme = value;
+};
+
+let current: Theme = readStored() ?? systemTheme();
 
 export const setTheme = (value: Theme): void => {
-  theme.update(value);
+  current = value;
+  apply(value);
   persist(value);
 };
 
 export const toggleTheme = (): void => {
-  setTheme(theme.get() === 'dark' ? 'light' : 'dark');
+  setTheme(current === 'dark' ? 'light' : 'dark');
 };
+
+// Apply the resolved theme on load; an inline <head> script sets the class even
+// earlier to avoid a flash of the wrong theme.
+apply(current);
 
 try {
   darkQuery.addEventListener('change', (event) => {
     if (readStored()) return;
-    theme.update(event.matches ? 'dark' : 'light');
+    setTheme(event.matches ? 'dark' : 'light');
   });
 } catch {
   // matchMedia unavailable; ignore

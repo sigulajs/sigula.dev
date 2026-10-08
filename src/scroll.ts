@@ -1,14 +1,29 @@
-import type {Sig} from 'sigula';
-import {sections} from './sections';
+const pickFirst = (
+  entries: IntersectionObserverEntry[],
+): IntersectionObserverEntry | undefined =>
+  entries
+    .filter((entry) => entry.isIntersecting)
+    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
 
-export const setupScrollSpy = (
-  activeSection: Sig<string>,
-  activeHeading: Sig<string>,
+const setActive = (
+  selector: string,
+  datasetKey: 'sectionLink' | 'headingLink',
+  id: string,
 ): void => {
+  for (const link of document.querySelectorAll<HTMLElement>(selector)) {
+    link.classList.toggle('active', link.dataset[datasetKey] === id);
+  }
+};
+
+// Progressive enhancement: no signals, just toggling `active` on the nav links
+// that were prerendered (in both the sidebar and the mobile drawer).
+export const setupScrollSpy = (): void => {
   if (!('IntersectionObserver' in window)) return;
 
   const subIds = new Set(
-    sections.flatMap((section) => (section.subs ?? []).map((sub) => sub.id)),
+    Array.from(
+      document.querySelectorAll<HTMLElement>('[data-heading-link]'),
+    ).map((link) => link.dataset.headingLink ?? ''),
   );
 
   const options: IntersectionObserverInit = {
@@ -16,16 +31,9 @@ export const setupScrollSpy = (
     threshold: 0,
   };
 
-  const pickFirst = (
-    entries: IntersectionObserverEntry[],
-  ): IntersectionObserverEntry | undefined =>
-    entries
-      .filter((entry) => entry.isIntersecting)
-      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-
   const sectionObserver = new IntersectionObserver((entries) => {
     const first = pickFirst(entries);
-    if (first) activeSection.update(first.target.id);
+    if (first) setActive('[data-section-link]', 'sectionLink', first.target.id);
   }, options);
   for (const section of document.querySelectorAll<HTMLElement>(
     'main section[id]',
@@ -39,7 +47,7 @@ export const setupScrollSpy = (
   const headingObserver = new IntersectionObserver((entries) => {
     const first = pickFirst(entries);
     if (first && subIds.has(first.target.id)) {
-      activeHeading.update(first.target.id);
+      setActive('[data-heading-link]', 'headingLink', first.target.id);
     }
   }, options);
   for (const heading of headings) headingObserver.observe(heading);

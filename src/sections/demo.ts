@@ -26,7 +26,7 @@ const body = html`<div>
     </div>
     <div>
       <p class="text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">Live demo</p>
-      <div class="mt-3">${Equation()}</div>
+      <div class="mt-3" data-demo="equation">${Equation()}</div>
     </div>
   </div>
 
@@ -44,7 +44,7 @@ const body = html`<div>
     </div>
     <div>
       <p class="text-xs font-semibold uppercase tracking-wider text-[var(--accent)]">Live demo</p>
-      <div class="mt-3">${Todos()}</div>
+      <div class="mt-3" data-demo="todos">${Todos()}</div>
     </div>
   </div>
 </div>`;

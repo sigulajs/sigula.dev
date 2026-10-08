@@ -1,20 +1,9 @@
-import {
-  attr,
-  compute,
-  html,
-  list,
-  patch,
-  repeat,
-  sig,
-  text,
-  toggleClass,
-  view,
-  type Sig,
-  type View,
-} from 'sigula';
+import {attr, html, list, patch, repeat, sig, type View} from 'sigula';
 import {type SectionMeta, navGroups} from '../sections';
 
-export const Nav = (active: Sig<string>, activeHeading: Sig<string>): View =>
+// All sub-links are rendered; CSS reveals the ones under the active section, and
+// enhance.ts toggles `active` as the reader scrolls.
+export const Nav = (activeId: string): View =>
   html`<nav aria-label="Documentation">
     ${repeat(sig(navGroups), {
       key: (group) => group.name,
@@ -27,21 +16,19 @@ export const Nav = (active: Sig<string>, activeHeading: Sig<string>): View =>
               <a
                 ${patch(
                   attr('href', `#${item.id}`),
-                  toggleClass('active', compute(active, (id) => id === item.id)),
+                  attr('data-section-link', item.id),
+                  attr('class', item.id === activeId ? 'nav-link active' : 'nav-link'),
                 )}
-                class="nav-link"
               >${item.title}</a>
-              ${view(compute(active, (id) => id === item.id), (isActive) =>
-                isActive
-                  ? list(item.subs ?? [], (sub) => html`<a
-                      ${patch(
-                        attr('href', `#${sub.id}`),
-                        toggleClass('active', compute(activeHeading, (id) => id === sub.id)),
-                      )}
-                      class="nav-sub"
-                    >${sub.title}</a>`)
-                  : text(''),
-              )}
+              <div class="nav-subs">
+                ${list(item.subs ?? [], (sub) => html`<a
+                  ${patch(
+                    attr('href', `#${sub.id}`),
+                    attr('data-heading-link', sub.id),
+                  )}
+                  class="nav-sub"
+                >${sub.title}</a>`)}
+              </div>
             </li>`,
           })}
         </ul>

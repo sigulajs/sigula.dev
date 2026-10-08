@@ -1,25 +1,10 @@
-import {
-  type AnyView,
-  compute,
-  html,
-  on,
-  patch,
-  repeat,
-  type Sig,
-  sig,
-  text,
-  type View,
-  view,
-} from 'sigula';
+import {html, repeat, sig, type View} from 'sigula';
 import type {SectionMeta} from '../sections';
-import {theme, toggleTheme} from '../theme';
 import {Badge} from './Badge';
 import {Nav} from './Nav';
 
 export interface LayoutProps {
   sections: SectionMeta[];
-  activeSection: Sig<string>;
-  activeHeading: Sig<string>;
 }
 
 const GitHubIcon = (): View =>
@@ -31,24 +16,25 @@ const SunIcon = (): View =>
 const MoonIcon = (): View =>
   html`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
 
-const ThemeToggle = (): View => {
-  const isDark = compute(theme, (value) => value === 'dark');
-  return html`<button
-    type="button"
-    ${patch(on('click', toggleTheme))}
-    aria-label="Toggle color theme"
-    class="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] text-[var(--text-h)] transition hover:border-[var(--accent-border)]"
-  >${view(isDark, (dark) => (dark ? MoonIcon() : SunIcon()))}</button>`;
-};
+// Both icons are always rendered; an inline <head> script (plus theme.ts) sets
+// the `dark` class and CSS shows the matching one.
+const ThemeToggle = (): View => html`<button
+  type="button"
+  data-theme-toggle
+  aria-label="Toggle color theme"
+  class="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] text-[var(--text-h)] transition hover:border-[var(--accent-border)]"
+>
+  <span class="block dark:hidden">${SunIcon()}</span>
+  <span class="hidden dark:block">${MoonIcon()}</span>
+</button>`;
 
-const Header = (
-  mobileOpen: Sig<boolean>,
-): View => html`<header class="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]">
+const Header = (): View => html`<header class="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--bg)]">
   <div class="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-3 px-4 @3xl:px-6">
     <button
       type="button"
-      ${patch(on('click', () => mobileOpen.update(true)))}
+      data-nav-open
       aria-label="Open navigation"
+      aria-expanded="false"
       class="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] text-[var(--text-h)] @3xl:hidden"
     >
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -70,35 +56,17 @@ const Header = (
   </div>
 </header>`;
 
-const MobileNav = (
-  open: Sig<boolean>,
-  active: Sig<string>,
-  activeHeading: Sig<string>,
-): AnyView =>
-  view(open, (isOpen) =>
-    isOpen
-      ? html`<div
-          class="fixed inset-0 z-50 bg-black/40 md:hidden"
-          ${patch(on('click', () => open.update(false)))}
-        >
-          <div
-            class="h-full w-64 overflow-y-auto bg-[var(--bg)] p-4"
-            ${patch(
-              on('click', (event) => {
-                event.stopPropagation();
-                const target = event.target;
-                if (target instanceof HTMLAnchorElement) open.update(false);
-              }),
-            )}
-          >
-            ${Nav(active, activeHeading)}
-          </div>
-        </div>`
-      : text(''),
-  );
+const MobileNav = (activeId: string): View => html`<div
+  data-nav-drawer
+  class="fixed inset-0 z-50 bg-black/40 md:hidden"
+>
+  <div data-nav-panel class="h-full w-64 overflow-y-auto bg-[var(--bg)] p-4">
+    ${Nav(activeId)}
+  </div>
+</div>`;
 
-export const Layout = ({sections, activeSection, activeHeading}: LayoutProps): View => {
-  const mobileOpen = sig(false);
+export const Layout = ({sections}: LayoutProps): View => {
+  const activeId = sections[0]?.id ?? '';
   const content = html`<div>
     ${repeat(sig(sections), {
       key: (section) => section.id,
@@ -107,10 +75,10 @@ export const Layout = ({sections, activeSection, activeHeading}: LayoutProps): V
   </div>`;
   return html`<div>
     <div class="@container min-h-screen">
-      ${Header(mobileOpen)}
+      ${Header()}
       <div class="mx-auto flex w-full max-w-[1100px] items-start gap-8 px-4 py-8 @3xl:px-6">
         <aside class="sticky top-14 hidden max-h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto @3xl:block">
-          ${Nav(activeSection, activeHeading)}
+          ${Nav(activeId)}
         </aside>
         <main class="min-w-0 flex-1">${content}</main>
       </div>
@@ -118,6 +86,6 @@ export const Layout = ({sections, activeSection, activeHeading}: LayoutProps): V
         <p>sigula — MIT License · zjh · <a href="https://github.com/sigulajs/sigula" class="hover:underline">GitHub</a></p>
       </footer>
     </div>
-    ${MobileNav(mobileOpen, activeSection, activeHeading)}
+    ${MobileNav(activeId)}
   </div>`;
 };
