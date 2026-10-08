@@ -1,4 +1,4 @@
-import {html, repeat, sig, type View} from 'sigula';
+import {html, list, type View} from 'sigula';
 import type {SectionMeta} from '../sections';
 import {Badge} from './Badge';
 import {Nav} from './Nav';
@@ -68,10 +68,7 @@ const MobileNav = (activeId: string): View => html`<div
 export const Layout = ({sections}: LayoutProps): View => {
   const activeId = sections[0]?.id ?? '';
   const content = html`<div>
-    ${repeat(sig(sections), {
-      key: (section) => section.id,
-      view: (section) => section.render(),
-    })}
+    ${list(sections, (section) => section.render())}
   </div>`;
   return html`<div>
     <div class="@container min-h-screen">
