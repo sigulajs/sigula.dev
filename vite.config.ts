@@ -90,9 +90,11 @@ const renderInTemporaryServer = async (): Promise<string> => {
   const server = await createServer({
     configFile: false,
     logLevel: 'silent',
-    plugins: [shikiRaw(), UnoCSS()],
+    // Only the shiki plugin is needed to load the sections; UnoCSS would start
+    // a filesystem watcher that keeps the build process alive.
+    plugins: [shikiRaw()],
     resolve: {preserveSymlinks: true},
-    server: {middlewareMode: true},
+    server: {middlewareMode: true, watch: null},
   });
   try {
     return await renderPrerendered((url) => server.ssrLoadModule(url));
